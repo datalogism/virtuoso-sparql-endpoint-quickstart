@@ -79,7 +79,7 @@ run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0)
 ################# TEST HERE
 
 echo "[TEST]===================>  BEGIN"
-for file in ${STORE_DATA_DIR%%/}*
+for file in "${STORE_DATA_DIR}/*"
 do
     if [[ -f $file ]]; then
         echo "[TEST] '${file}'"
