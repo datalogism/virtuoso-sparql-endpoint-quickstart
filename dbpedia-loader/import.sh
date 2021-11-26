@@ -76,6 +76,17 @@ run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
 echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
 run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
 
+################# TEST HERE
+
+echo "[TEST]===================>  BEGIN"
+for file in ${STORE_DATA_DIR%%/}*
+do
+    if [[ -f $file ]]; then
+        echo "[TEST] '${file}'"
+    fi
+done
+echo "[TEST]===================> END"
+
 #ensure that all supported formats get into the load list
 #(since we have to excluse graph-files *.* won't do the trick
 echo "[INFO] registring RDF documents for import"
