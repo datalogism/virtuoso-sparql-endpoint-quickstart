@@ -51,7 +51,7 @@ test_connection () {
 
 echo "[INFO] Waiting for download to finish..."
 wait_for_download
-echo "[TEST] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
+
 echo "will use ISQL port $STORE_ISQL_PORT to connect"
 echo "[INFO] Waiting for store to come online (${STORE_CONNECTION_TIMEOUT}s)"
 : ${STORE_CONNECTION_TIMEOUT:=60}
@@ -61,7 +61,6 @@ if [ $? -eq 2 ]; then
    exit 1
 fi
 
-echo "[TEST] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo "[INFO] Setting 'dbp_decode_iri' registry entry to 'on'"
 run_virtuoso_cmd "registry_set ('dbp_decode_iri', 'on');"
 
@@ -74,20 +73,8 @@ run_virtuoso_cmd "registry_set ('dbp_lang', '${DBP_LANG}');"
 echo "[INFO] Setting 'dbp_category' registry entry to ${DBP_CATEGORY}"
 run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
 
-echo "[TEST] !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
 echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
 run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
-
-################# TEST HERE
-
-echo "[TEST]===================>  BEGIN"
-for file in "${STORE_DATA_DIR}/*"
-do
-    if [[ -f $file ]]; then
-        echo "[TEST] '${file}'"
-    fi
-done
-echo "[TEST]===================> END"
 
 #ensure that all supported formats get into the load list
 #(since we have to excluse graph-files *.* won't do the trick
@@ -96,7 +83,6 @@ for ext in nt nq owl rdf trig ttl xml gz bz2; do
  echo "[INFO] ${STORE_DATA_DIR}.${ext} for import"
  run_virtuoso_cmd "ld_dir ('${STORE_DATA_DIR}', '*.${ext}', '${DOMAIN}');"
 done
-
 
 echo "[INFO] deactivating auto-indexing"
 run_virtuoso_cmd "DB.DBA.VT_BATCH_UPDATE ('DB.DBA.RDF_OBJ', 'ON', NULL);"
