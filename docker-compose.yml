@@ -5,7 +5,7 @@ services:
     env_file: config.env   
     environment:
       COLLECTION_URI: ${COLLECTION_URI}
-      TARGET_DIR: /root/data
+      TARGET_DIR: /root/data    
       SPARQL_ENDPOINT: ${SPARQL_ENDPOINT}
     volumes:
       - ${DATA_DIR}:/root/data
@@ -19,7 +19,10 @@ services:
       - ${VIRTUOSO_DATABASE_DIR}:/opt/virtuoso-opensource/database
       - ${DATA_DIR}:/usr/share/proj
   load:
-    image: dbpedia/virtuoso-sparql-endpoint-quickstart:latest
+    image: dl_perso:latest
+    build :
+       context: ./dbpedia-loader
+       dockerfile: Dockerfile
     env_file: config.env
     environment:
       STORE_DATA_DIR: /usr/share/proj
