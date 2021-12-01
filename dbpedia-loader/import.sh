@@ -49,27 +49,6 @@ test_connection () {
    done
 }
 
-echo "[INFO] Waiting for download to finish..."
-wait_for_download
-echo "[TEST IMPORT] HERE1 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-echo ">>>>>>>>>>>> DATA_DIR"
-echo "${DATA_DIR}"
-echo "----------------"
-
-#pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$'
-#pat2='[^\\\/]+(?=_lang)' 
-#for entry in "${DATA_DIR}"/*
-#do
-#  echo "$entry"
-#  if [[ $entry =~ $pat1 ]]
-#  then
-#	  echo "YEAH"
-#	  echo "${entry##*/}"
-#	  run_virtuoso_cmd "ld_dir ('${STORE_DATA_DIR}', '${entry##*/}', '${entry##*/}');"
-	  #[[ $entry =~ $pat2 ]] && echo "${BASH_REMATCH[1]}"
-#  fi
-#done
-
 
 echo "will use ISQL port $STORE_ISQL_PORT to connect"
 echo "[INFO] Waiting for store to come online (${STORE_CONNECTION_TIMEOUT}s)"
@@ -95,42 +74,35 @@ run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
 echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
 run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
 
-echo ">>>>>>>>>> STORE_DATA_DIR"
-echo "${STORE_DATA_DIR}"
-echo "----------------"
 
 
-for entry in usr/share 
-do
-  echo "$entry"
-done
+echo "[CUSTOM PART IMPORT] HERE WE ENTERING IN THE CUSTOM PART"
+# > we get the data_artefact name and we load it into a named graph based on 
+# REGEXPR 
+pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$' # IF ENDING BY ACCEPTED EXTENSIONS
+pat2='([^_]*)' # GET THE FIRST PART OF THE ARTIFACT NAME BEFORE th "_" ! COULD CHANGE DEPENDING OF NAMING CONVENTIONS !
 
-echo "[TEST IMPORT] HERE2 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!"
-### ADDED PART
-pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$'
-pat2='([^_]*)'
+echo "[CUSTOM PART IMPORT] BASED ON THESE regexpr : ${pat1} and ${pat2}"
+
 for entry in "${DATA_DIR}"/*
 do
   echo "$entry"
   if [[ $entry =~ $pat1 ]]
   then
-          
-          fn=${entry##*/}
-          echo "$fn" 
-	  #run_virtuoso_cmd "ld_dir ('${STORE_DATA_DIR}', '${fn}', '${entry##*/}');"
-          if [[ $fn =~ $pat2 ]]
+    fn=${entry##*/} # GET FILE NAME ONLY
+    echo "$fn" 
+    if [[ $fn =~ $pat2 ]]
 	  then
-		   matched="${BASH_REMATCH[1]}"
-		   echo "FOUNd AND LOAD ---------------- : ${DOMAIN}/${matched}"
-	  	 run_virtuoso_cmd "ld_dir ('${STORE_DATA_DIR}', '${fn}', '${DOMAIN}/${matched}');"
-
+		  matched="${BASH_REMATCH[1]}"
+		  echo "FOUNd AND LOAD ---------------- : ${DOMAIN}/${matched}"
+	  	run_virtuoso_cmd "ld_dir ('${STORE_DATA_DIR}', '${fn}', '${DOMAIN}/${matched}');"
 	  fi
-
-		  
   fi
 done
 
 
+######################################################### OLD PROCESS
+# > load every data inside the default graph 
 
 #ensure that all supported formats get into the load list
 #(since we have to excluse graph-files *.* won't do the trick
