@@ -1,3 +1,10 @@
+# GIT FORK OF https://github.com/dbpedia/virtuoso-sparql-endpoint-quickstart
+
+:france: This for is a custom virtuso sparql endpoint made for hosting the french DBpedia chapter, major updates allows to :
+* download databus collection https://databus.dbpedia.org/cringwald/collections/french_chapter
+* and loading it into artefact linked named graph 
+
+
 # Virtuoso SPARQL Endpoint Quickstart
 
 Creates and runs a Virtuoso Open Source instance including a SPARQL endpoint preloaded with a Databus Collection and the VOS DBpedia Plugin installed.
