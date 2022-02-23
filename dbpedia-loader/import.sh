@@ -75,6 +75,8 @@ run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
 
 echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
 run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
+echo "[INFO] Installing VAD package 'fct_dav.vad'"
+run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/fct_dav.vad', 0);"
 
 #ensure that all supported formats get into the load list
 #(since we have to excluse graph-files *.* won't do the trick
@@ -111,3 +113,6 @@ echo "[INFO] making checkpoint..."
 run_virtuoso_cmd 'checkpoint;'
 echo "[INFO] bulk load done; terminating loader"
 
+echo "[INFO] update of lookup tables"
+run_virtuoso_cmd 'urilbl_ac_init_db();'
+run_virtuoso_cmd 's_rank();'
