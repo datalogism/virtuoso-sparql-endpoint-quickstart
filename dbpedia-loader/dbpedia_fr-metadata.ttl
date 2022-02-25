@@ -24,13 +24,8 @@
 db_fr:sparql-service
     a                    sd:Service, dcat:DataService, prov:Entity ;
     sd:supportedLanguage sd:SPARQL10Query, sd:SPARQL11Query;
-    sd:endpoint          <http://fr.dbpedia.org/sparql>;    
-    dct:licence     <http://opendatacommons.org/licenses/by/1.0>;
-    schema:licence  <http://opendatacommons.org/licenses/by/1.0>;
-    owl:versionInfo "3.0";
-    dct:issued      "2022-02-24"^^xsd:date;############ TO CHANGE 
-    schema:datePublished "2022-02-24"^^xsd:date;
-    dct:source <http://fr.dbpedia.org/resource/Wikipedia>;  
+    sd:endpoint          <http://fr.dbpedia.org/sparql>;      
+    dcat:endpointURL     <https://covidontheweb.inria.fr/sparql>;
     foaf:homepage <http://fr.dbpedia.org/>; 
     dcat:endpointURL     <http://fr.dbpedia.org/sparql>;
     sd:resultFormat <http://www.w3.org/ns/formats/Turtle>, <http://www.w3.org/ns/formats/RDF_XML>, <http://www.w3.org/ns/formats/N3>, <http://www.w3.org/ns/formats/N-Triples> ;
@@ -41,7 +36,11 @@ db_fr:sparql-service
     dct:publisher    <https://ror.org/0496p8026>, <https://ror.org/02kvxyf05>, <https://ror.org/02feahw73>;
     schema:publisher <https://ror.org/0496p8026>, <https://ror.org/02kvxyf05>, <https://ror.org/02feahw73>;
     dct:subject <https://dbpedia.org/page/DBpedia> ,<https://fr.dbpedia.org/page/DBpedia> , <https://dbpedia.org/page/French_language>, <https://dbpedia.org/page/Semantic_Web> ;
-    sd:defaultGraph      <http://fr.dbpedia.org/> ;
+    sd:defaultGraph      [
+            a sd:Graph, dcat:Dataset, void:Dataset, schema:Dataset; 
+            void:dataDump <http://prod-dbpedia.inria.fr/dumps/> ;
+            void:uriLookupEndpoint <http://prod-dbpedia.inria.fr/describe/?url=>.
+    ] ;
     sd:availableGraphs [
           a                sd:GraphCollection;
         sd:namedGraph 
@@ -89,11 +88,6 @@ db_fr:sparql-service
 <https://team.inria.fr/wimmics/> a foaf:Organization; foaf:name "Wimmics research team".
 
 
-# --- Default graph desc
-<http://fr.dbpedia.org/>
-    a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset, schema:Dataset; 
-    void:dataDump <http://prod-dbpedia.inria.fr/dumps/> ;
-    void:uriLookupEndpoint <http://prod-dbpedia.inria.fr/describe/?url=>.
 
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_article-templates> 
@@ -101,21 +95,14 @@ db_fr:sparql-service
     dct:title "Wikipedia template"@en;
     dct:description "Wikipedia template used for describing the article"@en;    
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/generic/article-templates/>;
-    void:vocabulary dbp_fr: ;
-    void:propertyPartition [ void:property dbp_fr:wikiPageUsesTemplate; ].
+    void:vocabulary dbp_fr: .
     
 <http://fr.dbpedia.org/graph/dbpedia_generic_categories>   
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset, schema:Dataset, prov:Entity; 
     dct:title "Wikipedia category"@en;
     dct:description "Contains the Wikipedia categories per Article and category metadata (hierarchy and labels)"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/generic/categories/>;
-    void:vocabulary dct:, skos:, rdfs:, rdf: ;
-    void:propertyPartition [ void:property dct:subject; ];
-    void:propertyPartition [ void:property rdf:type; ]; 
-    void:propertyPartition [ void:property skos:prefLabel; ]; 
-    void:propertyPartition [ void:property skos:broader; ]; 
-    void:propertyPartition [ void:property skos:related; ]; 
-    void:propertyPartition [ void:property rdfs:label; ].
+    void:vocabulary dct:, skos:, rdfs:, rdf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_commons-sameas-links>   
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Linkset, schema:Dataset, prov:Entity; 
@@ -125,7 +112,7 @@ db_fr:sparql-service
     void:vocabulary owl: ;
     void:linkPredicate owl:sameAs ;
     void:subjectsTarget dbr_fr: ;
-    void:objectsTarget <http://commons.dbpedia.org> ;
+    void:objectsTarget <http://commons.dbpedia.org> .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_disambiguations>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Linkset, schema:Dataset, prov:Entity; 
@@ -135,7 +122,7 @@ db_fr:sparql-service
     void:vocabulary dbo: ;
     void:linkPredicate dbp_fr:wikiPageDisambiguates ;
     void:subjectsTarget dbr_fr: ;
-    void:objectsTarget dbr_fr: ;
+    void:objectsTarget dbr_fr: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_external-links>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Linkset, schema:Dataset, prov:Entity; 
@@ -190,14 +177,14 @@ db_fr:sparql-service
     dct:title "Labels"@en;
     dct:description "Article title of DBpedia linked entity"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/generic/labels/>; 
-    void:vocabulary rdfs: ;
+    void:vocabulary rdfs: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_page>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Page details"@en;
     dct:description "Wikipedia page id and page length"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/generic/page/>; 
-    void:vocabulary dbo: ;
+    void:vocabulary dbo: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_redirects>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Linkset, void:Dataset,schema:Dataset, prov:Entity; 
@@ -207,14 +194,14 @@ db_fr:sparql-service
     void:vocabulary dbo: ; 
     void:linkPredicate dbo:wikiPageRedirects ;
     void:subjectsTarget dbr_fr: ;
-    void:objectsTarget dbr_fr: ;
+    void:objectsTarget dbr_fr: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_revisions>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Revisions"@en;
     dct:description "Describe a DBpedia entity with it last wikipedia revision and it revision ID"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/generic/revisions/>; 
-    void:vocabulary dbo: , prov: ; 
+    void:vocabulary dbo: , prov: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_topical-concepts>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Linkset, void:Dataset,schema:Dataset, prov:Entity; 
@@ -224,7 +211,7 @@ db_fr:sparql-service
     void:vocabulary dbo: ; 
     void:linkPredicate dbo:MainArticleForCategory ;
     void:subjectsTarget dbr_fr: ;
-    void:objectsTarget dbr_fr: ;
+    void:objectsTarget dbr_fr: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_wikilinks>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Linkset, void:Dataset,schema:Dataset, prov:Entity; 
@@ -234,112 +221,112 @@ db_fr:sparql-service
     void:vocabulary dbo: ; 
     void:linkPredicate dbo:wikiPageWikiLink ;
     void:subjectsTarget dbr_fr: ;
-    void:objectsTarget dbr_fr: ;
+    void:objectsTarget dbr_fr: .
 
 <http://fr.dbpedia.org/graph/dbpedia_generic_wikipedia-links>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "wikipedia links"@en;
     dct:description "Link DBpedia entity to it Wikipedia page"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/generic/wikipedia-links/>; 
-    void:vocabulary foaf: , dce: ; 
+    void:vocabulary foaf: , dce: .
 
 <http://fr.dbpedia.org/graph/dbpedia_mappings_geo-coordinates-mappingbased>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Mappingbased geo-coordinates"@en;
     dct:description "Contains geographic coordinates from the Wikipedia Infoboxes refined by the mapping-based extraction."@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/mappings/geo-coordinates-mappingbased/>; 
-    void:vocabulary  georss:,  rdf: , geo: ;
+    void:vocabulary  georss:,  rdf: , geo: .
 
 <http://fr.dbpedia.org/graph/dbpedia_mappings_instance-types>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "DBpedia Ontology instance types"@en;
     dct:description "Classification of instances with the DBpedia Ontology. Contains triples of the form `<$resource> rdf:type <$dbpedia_ontology_class>` generated by the mappings extraction. Contains transitives links (from other ontologies), and specifics links (only from DBO)"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/mappings/instance-types/>; 
-    void:vocabulary  rdf: ;
+    void:vocabulary  rdf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_mappings_mappingbased-literals>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Literals extracted with mappings"@en;
     dct:description "High-quality literal (datatyped) properties (numeric data and text) refined by the mappings extraction"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/mappings/mappingbased-literals/>; 
-    void:vocabulary  dbo: , foaf: ;
+    void:vocabulary  dbo: , foaf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_mappings_mappingbased-objects>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Cleaned object properties extracted with mappings"@en;
     dct:description "Cleaned version of high quality statements with IRI object values extracted by the mappings extraction from Wikipedia Infoboxes. Contains Disjoint Domain data and Disjoint Range data but also data that passed the others tests"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/mappings/mappingbased-objects/>; 
-    void:vocabulary  dbo: , foaf: ;
+    void:vocabulary  dbo: , foaf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_mappings_mappingbased-objects-uncleaned>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "(Uncleaned) Object properties extracted with mappings"@en;
     dct:description "Uncleand High quality statements with IRI object values extracted by the mappings extraction from Wikipedia Infoboxes."@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/mappings/mappingbased-objects-uncleaned/>; 
-    void:vocabulary  dbo: , foaf: ;
+    void:vocabulary  dbo: , foaf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_mappings_specific-mappingbased-properties>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "(Uncleaned) Object properties extracted with mappings"@en;
     dct:description "Uncleand High quality statements with IRI object values extracted by the mappings extraction from Wikipedia Infoboxes."@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/mappings/mappingbased-objects-uncleaned/>; 
-    void:vocabulary  dbo: , foaf: ;
+    void:vocabulary  dbo: , foaf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_ontology>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Ontology DBpedia"@en;
     dct:description "Last Version of DBpedia ontology"@en;
     prov:has_provenance <https://databus.dbpedia.org/ontologies/dbpedia.org/ontology/>; 
-    void:vocabulary  rdf: , rdfs: ;
+    void:vocabulary  rdf: , rdfs: .
 
 <http://fr.dbpedia.org/graph/dbpedia_replaced-iris_labels>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Replaced IRIs of DBpedia releases"@en;
     dct:description "Replaced IRIs of DBpedia labels en -> fr "@en;
     prov:has_provenance <https://databus.dbpedia.org/vehnem/replaced-iris/>; 
-    void:vocabulary  rdfs: ;
+    void:vocabulary  rdfs: .
 
 <http://fr.dbpedia.org/graph/dbpedia_text_long-abstracts>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Long abstracts from Wikipedia articles"@en;
     dct:description "The text before the table of contents of Wikipedia articles"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/text/long-abstracts/>; 
-    void:vocabulary  dbo: ;
+    void:vocabulary  dbo: .
 
 <http://fr.dbpedia.org/graph/dbpedia_text_short-abstracts>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Shortened abstracts from Wikipedia articles"@en;
     dct:description "The text before the table of contents of Wikipedia articles is shortened to approx. 2-3 sentences"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/text/short-abstracts/>; 
-    void:vocabulary  dbo: ;
+    void:vocabulary  dbo: .
 
 <http://fr.dbpedia.org/graph/dbpedia_wikidata_geo-coordinates>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Wikidata geo-coordinates"@en;
     dct:description "Geographic coordinates extracted from Wikidata, subject are wikidata based URI"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/wikidata/geo-coordinates/>; 
-    void:vocabulary  georss:,  rdf: , geo: ;
+    void:vocabulary  georss:,  rdf: , geo: .
 
 <http://fr.dbpedia.org/graph/dbpedia_wikidata_instance-types>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Wikidata Instance Types"@en;
     dct:description "Geographic coordinates extracted from Wikidata, subject are wikidata based URI"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/wikidata/instance-types/>; 
-    void:vocabulary  rdf: ;
+    void:vocabulary  rdf: .
 
 <http://fr.dbpedia.org/graph/dbpedia_wikidata_mappingbased-literals>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Wikidata Mappingbased Literals"@en;
     dct:description "High-quality data extracted using the mapping-based extraction (Literal properties only), subject are wikidata based URI"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/wikidata/mappingbased-literals/>; 
-    void:vocabulary  dbo: ;
+    void:vocabulary  dbo: .
 
 <http://fr.dbpedia.org/graph/dbpedia_wikidata_mappingbased-objects-uncleaned>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "Wikidata mappingbased Objects uncleaned"@en;
     dct:description "High-quality data extracted using the mapping-based extraction (Object properties only), subject are wikidata based URI"@en;
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/wikidata/mappingbased-objects-uncleaned/>; 
-    void:vocabulary  dbo: , rdfs: ;
+    void:vocabulary  dbo: , rdfs: .
 
 <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>
     a sd:Graph, sd:NamedGraph,  dcat:Dataset,void:Linkset, void:Dataset,schema:Dataset, prov:Entity; 
@@ -348,12 +335,12 @@ db_fr:sparql-service
     prov:has_provenance <https://databus.dbpedia.org/dbpedia/wikidata/sameas-external/>; 
     void:vocabulary  owl: ;
     void:linkPredicate owl:sameAs ;
-    void:subjectsTarget dbr_wd: ;
+    void:subjectsTarget dbr_wd: .
 
 <http://fr.dbpedia.org/graph/outlinks_yago_links>
    a sd:Graph, sd:NamedGraph,  dcat:Dataset, void:Dataset,schema:Dataset, prov:Entity; 
     dct:title "2016 version of Yago ontology : contains links, toxonomy and instance-types : from Dbpedia entity to Yago"@en;
     dct:description "External sameas, subject are wikidata based URI"@en;
     prov:has_provenance <https://databus.dbpedia.org/vehnem/yago/>; 
-    void:vocabulary  owl: ;
+    void:vocabulary  owl: .
 
