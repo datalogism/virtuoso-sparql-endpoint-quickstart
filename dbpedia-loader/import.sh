@@ -102,6 +102,11 @@ run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0)
 echo "[INFO] Installing VAD package 'fct_dav.vad'"
 run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/fct_dav.vad', 0);"
 
+##### HERE WE CHANGE THE DEFAULT BEHAVIOR OF THE DESCRIBE
+# see https://community.openlinksw.com/t/how-to-change-default-describe-mode-in-faceted-browser/1691/3
+run_virtuoso_cmd "INSERT INTO DB.DBA.SYS_SPARQL_HOST VALUES ('*',null,null,null,'DEFINE sql:describe-mode \"CBD\"');"
+
+
 echo "[DATA IMPORT] HERE WE ENTERING IN THE CUSTOM PART"
 # > we get the data_artefact name and we load it into a named graph based on 
 # REGEXPR 
