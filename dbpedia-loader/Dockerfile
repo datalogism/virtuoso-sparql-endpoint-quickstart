@@ -9,7 +9,7 @@ RUN apt-get install -y git virtuoso-opensource pigz pbzip2 bzip2
 
 ADD import_conductor.sh /
 RUN chmod +x /import_conductor.sh
-ADD process /
+ADD process ./process
 RUN chmod +rx -R /process
 
 ENTRYPOINT /bin/bash import.sh 
