@@ -70,6 +70,7 @@ if [ $? -eq 2 ]; then
 fi
 
 
+/bin/bash ./process/structure_process.sh
 
 ## CREATE SUBGRAPHS
 run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_CREATE ('${DOMAIN}',1);"
