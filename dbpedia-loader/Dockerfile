@@ -12,4 +12,4 @@ RUN chmod +x /import_conductor.sh
 ADD process ./process
 RUN chmod +rx -R /process
 
-ENTRYPOINT /bin/bash import.sh 
+ENTRYPOINT /bin/bash import_conductor.sh 
