@@ -1,3 +1,5 @@
+. ../virtuoso_fct.sh --source-only
+
 pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$' # IF ENDING BY ACCEPTED EXTENSIONS
 pat2='([a-z\-]+)_'
 pat3='.*\.bz2$'
