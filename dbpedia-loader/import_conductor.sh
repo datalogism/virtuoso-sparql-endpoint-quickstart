@@ -2,6 +2,7 @@
 
 . ./virtuoso_fct.sh --source-only
 
+echo " IMPORT CONDUCTOR version - 13/06/2022";
 # ADD A LOCKER FOR MONITORING THE PROCESS
 touch /opt/virtuoso-opensource/database/loader_locker.lck;
 
@@ -71,6 +72,7 @@ checkpoint_interval(60);
 EOF`
 run_virtuoso_cmd "$load_cmds";
 
+echo "MULTI LANG DATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/multilingual_labels.sh
 
