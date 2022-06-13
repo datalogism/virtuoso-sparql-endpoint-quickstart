@@ -72,6 +72,10 @@ checkpoint_interval(60);
 EOF`
 run_virtuoso_cmd "$load_cmds";
 
+echo "INTERLINK AS SAME AS"
+############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
+/bin/bash ./process/interlink_to_sameAs.sh
+
 echo "MULTI LANG DATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/multilingual_labels.sh
