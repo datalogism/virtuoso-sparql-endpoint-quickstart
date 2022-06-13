@@ -1,5 +1,6 @@
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
+limit=500000;
 ################### SPARQL - GET ALL NAMED WIKIDATA GRAPH
 get_named_graph='SPARQL \
 SELECT ?o FROM <http://fr.dbpedia.org/graph/metadata> WHERE {\
