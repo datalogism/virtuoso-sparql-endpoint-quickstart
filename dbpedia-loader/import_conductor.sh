@@ -76,7 +76,9 @@ run_virtuoso_cmd "$load_cmds";
 
 #### WIKIDATA PLACE
 
-#### STATS PLACE
+############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
+/bin/bash ./process/stats_process.sh
+
 
 echo "[INFO] making checkpoint..."
 run_virtuoso_cmd 'checkpoint;'
