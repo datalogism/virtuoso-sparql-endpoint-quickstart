@@ -3,7 +3,7 @@
 
 echo "> INTERLANG LINKS TRANSFORM TO SAMEAS ";
 nbsameAs=0;
-
+limit=500000;
 ################### SPARQL - COUNT INTERLINKS
 resp_interlang=$(run_virtuoso_cmd "SPARQL \
 SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE {\
