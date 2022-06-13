@@ -24,17 +24,17 @@ if [ $? -eq 2 ]; then
    exit 1
 fi
 
-
+############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/structure_process.sh
 
+
+############## VIRTUOSO CONFIG
 echo "[INFO] Setting 'dbp_decode_iri' registry entry to 'on'"
 run_virtuoso_cmd "registry_set ('dbp_decode_iri', 'on');"
-
 echo "[INFO] Setting dynamic !!!!"
 run_virtuoso_cmd "registry_set ('dbp_DynamicLocal', 'on');"
 run_virtuoso_cmd "registry_set ('dbp_lhost', ':8890');"
 run_virtuoso_cmd "registry_set ('dbp_vhost', '${DOMAIN}');"
-
 echo "[INFO] Setting 'dbp_domain' registry entry to ${DOMAIN}"
 run_virtuoso_cmd "registry_set ('dbp_domain', '${DOMAIN}');"
 echo "[INFO] Setting 'dbp_graph' registry entry to ${DOMAIN}"
@@ -44,6 +44,7 @@ run_virtuoso_cmd "registry_set ('dbp_lang', '${DBP_LANG}');"
 echo "[INFO] Setting 'dbp_category' registry entry to ${DBP_CATEGORY}"
 run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
 
+################ INSTALL LAST DBPEDIA VAD
 echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
 run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
 echo "[INFO] Installing VAD package 'fct_dav.vad'"
@@ -52,8 +53,6 @@ run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/fct_dav.vad', 0);"
 ##### HERE WE CHANGE THE DEFAULT BEHAVIOR OF THE DESCRIBE
 # see https://community.openlinksw.com/t/how-to-change-default-describe-mode-in-faceted-browser/1691/3
 run_virtuoso_cmd "INSERT INTO DB.DBA.SYS_SPARQL_HOST VALUES ('*',null,null,null,'DEFINE sql:describe-mode \"CBD\"');"
-
-echo "[DATA IMPORT] HERE WE ENTERING IN THE CUSTOM PART"
 
 #### DATA IMPORT PLACE
 
