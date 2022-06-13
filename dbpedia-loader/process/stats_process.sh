@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
 pat4='metadata'
 
