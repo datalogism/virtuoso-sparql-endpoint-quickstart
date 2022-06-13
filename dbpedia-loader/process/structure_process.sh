@@ -60,12 +60,20 @@ do
         # count nb lines and get date of prod
      
         date=$(echo $entry  | grep -Eo '[[:digit:]]{4}.[[:digit:]]{2}.[[:digit:]]{2}');         
-        resp=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?d) FROM <${DOMAIN}/graph/metadata> WHERE { ?s prov:wasGeneratedAtTime ?d . FILTER(?s = <${DOMAIN}/graph/${final_name}> )} ;")  
+        resp=$(run_virtuoso_cmd "SPARQL\
+        SELECT COUNT(?d) FROM <${DOMAIN}/graph/metadata> WHERE {\
+        ?s prov:wasGeneratedAtTime ?d.\
+        FILTER(?s = <${DOMAIN}/graph/${final_name}> )\
+        } ;")  
         nb=$(echo $resp | awk '{print $4}')
         if [ "$nb" -eq "0" ];then
-           run_virtuoso_cmd "SPARQL INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> prov:wasGeneratedAtTime '${date}'^^xsd:date . <${DOMAIN}/graph/${final_name}>  schema:datePublished '${date}'^^xsd:date . };"
+           run_virtuoso_cmd "SPARQL \
+           INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> prov:wasGeneratedAtTime '${date}'^^xsd:date .\
+           <${DOMAIN}/graph/${final_name}>  schema:datePublished '${date}'^^xsd:date .\
+           };"
         fi
-        run_virtuoso_cmd "SPARQL INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> void:dataDump <http://prod-dbpedia.inria.fr/dumps/lastUpdate/$fn> };"
+        run_virtuoso_cmd "SPARQL \
+        INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> void:dataDump <http://prod-dbpedia.inria.fr/dumps/lastUpdate/$fn> };"
         fi
     fi;
 done
