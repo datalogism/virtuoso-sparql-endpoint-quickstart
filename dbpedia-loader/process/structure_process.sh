@@ -59,19 +59,23 @@ do
     if  [[ $entry =~ $pat3 ]] &&  [[ ! $entry =~ $pat4 ]]; then
         # count nb lines and get date of prod
      
-        date=$(echo $entry  | grep -Eo '[[:digit:]]{4}.[[:digit:]]{2}.[[:digit:]]{2}');         
+        date=$(echo $entry  | grep -Eo '[[:digit:]]{4}.[[:digit:]]{2}.[[:digit:]]{2}');  
+        ################### SPARQL - GET NUMBER OF DATASET FROM DATE IF SUM NEEDED
         resp=$(run_virtuoso_cmd "SPARQL\
         SELECT COUNT(?d) FROM <${DOMAIN}/graph/metadata> WHERE {\
         ?s prov:wasGeneratedAtTime ?d.\
         FILTER(?s = <${DOMAIN}/graph/${final_name}> )\
-        } ;")  
+        } ;") 
         nb=$(echo $resp | awk '{print $4}')
         if [ "$nb" -eq "0" ];then
+        
+        ###################  SPARQL - INSERT DATE PUBLICATION
            run_virtuoso_cmd "SPARQL \
            INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> prov:wasGeneratedAtTime '${date}'^^xsd:date .\
            <${DOMAIN}/graph/${final_name}>  schema:datePublished '${date}'^^xsd:date .\
            };"
         fi
+        ###################  SPARQL - INSERT DUMP FILE NAME
         run_virtuoso_cmd "SPARQL \
         INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> void:dataDump <http://prod-dbpedia.inria.fr/dumps/lastUpdate/$fn> };"
         fi
