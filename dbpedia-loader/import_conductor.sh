@@ -71,6 +71,9 @@ checkpoint_interval(60);
 EOF`
 run_virtuoso_cmd "$load_cmds";
 
+############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
+/bin/bash ./process/multilingual_labels.sh
+
 
 #### INTERLANG IMPORT PLACE
 
