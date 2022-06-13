@@ -1,4 +1,3 @@
-. ../virtuoso_fct.sh --source-only
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
 
