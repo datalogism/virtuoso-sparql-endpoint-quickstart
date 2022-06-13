@@ -1,3 +1,4 @@
+#!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
 
 pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$' # IF ENDING BY ACCEPTED EXTENSIONS
