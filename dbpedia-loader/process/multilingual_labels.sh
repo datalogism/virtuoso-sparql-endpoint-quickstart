@@ -16,7 +16,7 @@ for lang in ${lang_list[@]}; do
     if [[ $lang != 'fr' ]]; then
 	  echo "$lang need to be treaten";
 	  
-          ################### SPARQL - COUNT LANG TO DO
+          ################### SPARQL - COUNT LANG TO DO VIA WIKILINKS
 	  resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {\
 	  ?s_lang rdfs:label ?o_lang.\
 	  FILTER(lang(?o_lang)='$lang').\
@@ -28,7 +28,7 @@ for lang in ${lang_list[@]}; do
 	  while [ $nb_wikilinks -ne 0 ]
 	  do
 	  
-            ################### SPARQL - ATTACH TRANSLATION TO FRENCH LABEL
+            ################### SPARQL - ATTACH TRANSLATION TO FRENCH LABEL O VIA WIKILINKS
 	     resp_labels=$(run_virtuoso_cmd "SPARQL\
 		    DEFINE sql:log-enable 2  WITH  <http://fr.dbpedia.org/graph/dbpedia_generic_labels>\
 		    DELETE { ?s_lang rdfs:label ?o_lang. }\
@@ -42,7 +42,7 @@ for lang in ${lang_list[@]}; do
 	      }\
 	      }  LIMIT $limit };"); 
 
-              ################### SPARQL - COUNT AGAIN HOW MANY WE NEED TO DO
+              ################### SPARQL - COUNT AGAIN HOW MANY WE NEED TO DO O VIA WIKILINKS
 	      resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {\
 	      ?s_lang rdfs:label ?o_lang.\
 	      FILTER(lang(?o_lang)='$lang').\
@@ -52,6 +52,43 @@ for lang in ${lang_list[@]}; do
 	      } ;");
 	      nb_wikilinks=$(echo $resp_todo | awk '{print $4}');
 	      echo $nb_wikilinks;
+	  done
+	  ################### SPARQL - COUNT LANG TO DO VIA WIKIDATA
+	  resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {\
+	  ?s_lang rdfs:label ?o_lang.\
+	  FILTER(lang(?o_lang)='$lang').\
+	  {\
+	  SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang }\
+	  }\
+	  } ;");
+	  nb_wikidata=$(echo $resp_todo | awk '{print $4}');
+	  while [ $nb_wikidata -ne 0 ]
+	  do
+	  
+            ################### SPARQL - ATTACH TRANSLATION TO FRENCH LABEL  VIA WIKIDATA
+	     resp_labels=$(run_virtuoso_cmd "SPARQL\
+		    DEFINE sql:log-enable 2  WITH  <http://fr.dbpedia.org/graph/dbpedia_generic_labels>\
+		    DELETE { ?s_lang rdfs:label ?o_lang. }\
+		    INSERT { ?s_fr rdfs:label ?o_lang. }\
+		    WHERE {  \
+	      SELECT ?s_fr ?o_lang ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {\
+	      ?s_lang rdfs:label ?o_lang.\
+	      FILTER(lang(?o_lang)='$lang').\
+	      {\
+		SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang }\
+	      }\
+	      }  LIMIT $limit };"); 
+
+              ################### SPARQL - COUNT AGAIN HOW MANY WE NEED TO DO  VIA WIKIDATA
+	      resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {\
+	      ?s_lang rdfs:label ?o_lang.\
+	      FILTER(lang(?o_lang)='$lang').\
+	      {\
+	      SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang }\
+	      }\
+	      } ;");
+	      nb_wikidata=$(echo $resp_todo | awk '{print $4}');
+	      echo $nb_wikidata;
 	  done
     fi
 done
