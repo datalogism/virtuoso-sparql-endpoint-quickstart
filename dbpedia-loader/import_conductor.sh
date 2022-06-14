@@ -76,15 +76,15 @@ echo "INTERLINK AS SAME AS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/interlink_to_sameAs.sh
 
+echo "PROCESS WIKIDATA"
+############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
+/bin/bash ./process/process_wikidata.sh
+
 echo "MULTI LANG DATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/multilingual_labels.sh
 
-
-#### INTERLANG IMPORT PLACE
-
-#### WIKIDATA PLACE
-
+echo "COMPUTE STATS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/stats_process.sh
 
