@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
 
-
+limit=500000;
 echo "============ multilingual_labels.sh"
 ################### SPARQL - GET LANG LIST
 resp=$(run_virtuoso_cmd "SPARQL \
