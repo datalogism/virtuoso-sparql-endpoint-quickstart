@@ -1,6 +1,8 @@
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
 
+
+echo "============ multilingual_labels.sh"
 ################### SPARQL - GET LANG LIST
 resp=$(run_virtuoso_cmd "SPARQL \
 SELECT DISTINCT CONCAT('lang_',?lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where {\
