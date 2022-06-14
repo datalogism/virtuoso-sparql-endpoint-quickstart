@@ -2,13 +2,14 @@
 . ../virtuoso_fct.sh --source-only
 
 ################### SPARQL - GET LANG LIST
-get_lang_labels="SPARQL \
-SELECT DISTINCT ?lang FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where {\
+resp=$(run_virtuoso_cmd "SPARQL \
+SELECT DISTINCT CONCAT('lang_',?lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where {\
 ?s rdfs:label ?o.\
 BIND (lang(?o) AS ?lang)\
-};";
-resp=$(run_virtuoso_cmd "$get_lang_labels");
-lang_list=$(echo $resp | tr " " "\n");
+};";);
+echo $resp;
+lang_list=$(echo $resp | tr " " "\n" | grep -oP "lang_\K(.*)");
+
 for lang in ${lang_list[@]}; do
   echo "$lang need to be treaten";
   resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {\
