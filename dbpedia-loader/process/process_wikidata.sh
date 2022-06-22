@@ -68,7 +68,7 @@ do
 	    } . {\
 	    SELECT ?y ?p ?o FROM <$graph> WHERE {?y ?p ?o } \
 	    } };");
-            nb_todo0=$(echo $resp_todo0 | awk '{print $4}');
+            nb_todo0=$(get_answer_nb "$resp_todo0");
             echo "$graph need to change Subjects : $nb_todo0";
         done
     done
@@ -99,7 +99,7 @@ do
 	    } . {\
 	    SELECT ?s ?p ?wkd FROM <$graph> WHERE {?s ?p ?wkd } }\
 	    };");
-	    nb_todo0=$(echo $resp_todo0 | awk '{print $4}');
+	    nb_todo0=$(get_answer_nb "$resp_todo0");
 	    echo "$graph need to change objects : $nb_todo0";
         done
     done
@@ -129,7 +129,7 @@ do
 	FILTER (?y != ?p )\
 	} LIMIT $limit };");
         resp_todo=$(run_virtuoso_cmd "SPARQL SELECT COUNT(*) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:frResource. ?s owl:sameAs ?y. ?s owl:sameAs ?p. FILTER (?y != ?p ) };");
-        nb_todo=$(echo $resp_todo | awk '{print $4}');
+        nb_todo=$(get_answer_nb "$resp_todo");
         echo $nb_todo;
     done
     echo ">>>>>> INVERSE SAME AS"
@@ -148,7 +148,7 @@ do
 	?s owl:sameAs ?y \
 	} LIMIT $limit };");
         resp_todo2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:frResource. ?s owl:sameAs ?y. };");
-        nb_todo2=$(echo $resp_todo2 | awk '{print $4}');
+        nb_todo2=$(get_answer_nb "$resp_todo2");
     done
 done
 echo "[CLEAN WIKIDATA] END";
