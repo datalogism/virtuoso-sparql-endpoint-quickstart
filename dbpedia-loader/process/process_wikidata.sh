@@ -37,8 +37,9 @@ do
     resp_count=$(run_virtuoso_cmd "SPARQL\
     SELECT COUNT(?s)\
     FROM  <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-    WHERE { ?s rdf:type dbo:frResource };");
-    nb_global=$(echo $resp_count | awk '{print $4}');
+    WHERE { ?s rdf:type dbo:frResource };");    
+    nb_global=$(get_answer_nb "$resp_count");
+    
     echo ">>>>>> UPDATE EACH GRAPH SUBJECTS";
     for graph in ${graph_list[@]}; do
         nb_todo0=1;
