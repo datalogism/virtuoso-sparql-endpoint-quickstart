@@ -50,12 +50,9 @@ test_connection () {
    done
 }
 get_answer_nb() {
-  resp=$1;
-   nb=$(echo $resp | awk '{print $4}');
-   if [[ "$resp" == *"semicolon"* ]]; then
-        nb=$(echo $resp | awk '{print $14}');
-  fi
-  echo "$nb";
+   resp=$1;
+   nb=$(echo $resp | grep -o -P '(?<=_\s)\d*(?=\s)');
+   echo "$nb";
 }
 
 
