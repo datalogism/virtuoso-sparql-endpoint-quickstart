@@ -24,7 +24,8 @@ for lang in ${lang_list[@]}; do
 	  SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE { ?s_fr owl:sameAs ?s_lang }\
 	  }\
 	  } ;");
-	  nb_wikilinks=$(echo $resp_todo | awk '{print $4}');
+	     
+    	  nb_wikilinks=$(get_answer_nb "$resp_todo");
 	  while [ $nb_wikilinks -ne 0 ]
 	  do
 	  
@@ -50,7 +51,7 @@ for lang in ${lang_list[@]}; do
 	      SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE { ?s_fr owl:sameAs ?s_lang }\
 	      }\
 	      } ;");
-	      nb_wikilinks=$(echo $resp_todo | awk '{print $4}');
+    	      nb_wikilinks=$(get_answer_nb "$resp_todo");
 	      echo $nb_wikilinks;
 	  done
 	  ################### SPARQL - COUNT LANG TO DO VIA WIKIDATA
@@ -61,7 +62,8 @@ for lang in ${lang_list[@]}; do
 	  SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang }\
 	  }\
 	  } ;");
-	  nb_wikidata=$(echo $resp_todo | awk '{print $4}');
+	  
+    	  nb_wikidata=$(get_answer_nb "$resp_todo");
 	  while [ $nb_wikidata -ne 0 ]
 	  do
 	  
@@ -87,7 +89,7 @@ for lang in ${lang_list[@]}; do
 	      SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang }\
 	      }\
 	      } ;");
-	      nb_wikidata=$(echo $resp_todo | awk '{print $4}');
+    	      nb_wikidata=$(get_answer_nb "$resp_todo");
 	      echo $nb_wikidata;
 	  done
     fi
@@ -100,7 +102,7 @@ SELECT COUNT(distinct ?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labe
 ?s ?p ?o.
 FILTER(!STRSTARTS(STR(?s), 'http://fr.dbpedia.org/') )
 };");
-nb_to_delete=$(echo $resp2 | awk '{print $4}');
+nb_to_delete=$(get_answer_nb "$resp2");
 while [ $nb_to_delete -ne 0 ]
 do
 	
@@ -120,5 +122,6 @@ do
 	?s ?p ?o.
 	FILTER(!STRSTARTS(STR(?s), 'http://fr.dbpedia.org/') )
 	};");
-	nb_to_delete=$(echo $resp2 | awk '{print $4}');
+	
+        nb_to_delete=$(get_answer_nb "$resp2");
 done
