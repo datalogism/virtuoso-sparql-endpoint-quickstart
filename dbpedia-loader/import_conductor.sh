@@ -2,7 +2,7 @@
 
 . ./virtuoso_fct.sh --source-only
 
-echo " IMPORT CONDUCTOR version - 23/06/2022";
+echo " IMPORT CONDUCTOR version - 24/06/2022";
 # ADD A LOCKER FOR MONITORING THE PROCESS
 touch /opt/virtuoso-opensource/database/loader_locker.lck;
 
@@ -74,7 +74,7 @@ run_virtuoso_cmd "$load_cmds";
 
 echo "CHANGE GEOLOC RELATED SHAPE"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/geoloc_changes
+/bin/bash ./process/geoloc_changes.sh
 
 echo "INTERLINK AS SAME AS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
