@@ -74,7 +74,7 @@ run_virtuoso_cmd "$load_cmds";
 
 echo "CHANGE GEOLOC RELATED SHAPE"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/geoloc_changes.sh
+/bin/bash ./process/geoloc_changes
 
 echo "INTERLINK AS SAME AS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
