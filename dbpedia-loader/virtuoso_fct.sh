@@ -52,6 +52,10 @@ test_connection () {
 get_answer_nb() {
    resp=$1;
    nb=$(echo $resp | grep -o -P '(?<=_\s)\d*(?=\s)');
+   re='^[0-9]+$'
+   if ! [[ $nb =~ $re ]] ; then
+     echo "$resp";
+   fi
    echo "$nb";
 }
 
