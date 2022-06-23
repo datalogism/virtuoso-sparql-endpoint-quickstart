@@ -9,7 +9,8 @@ resp_interlang=$(run_virtuoso_cmd "SPARQL \
 SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE {\
 ?s dbo:wikiPageInterLanguageLink ?o \
 };");
-nb_interlang=$(echo $resp_interlang | awk '{print $4}');
+
+nb_interlang=$(get_answer_nb "$resp_interlang");
 if [ $nb_interlang -ne 0 ]
 then
     while [ $nb_interlang -ne $nbsameAs ];
@@ -30,7 +31,8 @@ then
         SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE { \
         ?s owl:sameAs ?o\
         };");
-        nbsameAs=$(echo $resp_sameAs | awk '{print $4}');
+        
+        nbsameAs=$(get_answer_nb "$nbsameAs");
         echo "$nb_interlang ne $nbsameAs";
     done
 fi
