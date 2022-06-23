@@ -67,7 +67,8 @@ do
         ?s prov:wasGeneratedAtTime ?d.\
         FILTER(?s = <${DOMAIN}/graph/${final_name}> )\
         } ;") 
-        nb=$(echo $resp | awk '{print $4}')
+           
+        nb=$(get_answer_nb "$resp");
         if [ "$nb" -eq "0" ];then
         
         ###################  SPARQL - INSERT DATE PUBLICATION
