@@ -16,22 +16,15 @@ while [ $nb_new -gt $nb_last ];
      DELETE {  ?s ?p ?o. \
      } \
      INSERT { ?s dbo:relatedPlaces [ \
-         <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type; \
-         <http://www.georss.org/georss/point> ?point; \
-         <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat; \
-         <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?long; \
-         <http://www.w3.org/2003/01/geo/wgs84_pos#geometry> ?geo; \
+        ?p ?o \
      ]. \ 
      } \
     WHERE { \
-     SELECT ?s ?p ?o ?type ?geo ?lat ?long ?point \
+     SELECT ?s ?p ?o
      FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> \
      WHERE { \
-     ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type . \
-     OPTIONAL{ ?s <http://www.georss.org/georss/point> ?point .} \
-     OPTIONAL { ?s <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat.} \
-     OPTIONAL { ?s <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?long.} \
-     OPTIONAL { ?s <http://www.w3.org/2003/01/geo/wgs84_pos#geometry> ?geo.} \
+     ?s ?p ?o.
+     FILTER( ?p != dbo:relatedPlaces) \
      } LIMIT $limit \
      } ;");
      
