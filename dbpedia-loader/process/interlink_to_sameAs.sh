@@ -32,7 +32,7 @@ then
         ?s owl:sameAs ?o\
         };");
         
-        nbsameAs=$(get_answer_nb "$nbsameAs");
+        nbsameAs=$(get_answer_nb "$resp_sameAs");
         echo "$nb_interlang ne $nbsameAs";
     done
 fi
