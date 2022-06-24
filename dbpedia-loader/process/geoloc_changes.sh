@@ -2,7 +2,7 @@
 . ../virtuoso_fct.sh --source-only
 limit=500000;
 
-echo "=============> GEOLOC CHANGES NEW 6"
+echo "=============> GEOLOC CHANGES NEW 7"
 
 nb_blank=0;
 echo "=============> NB TODO : $nb_todo";
