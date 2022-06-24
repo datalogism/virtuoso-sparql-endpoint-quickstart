@@ -5,14 +5,11 @@ limit=500000;
 echo "=============> GEOLOC CHANGES NEW 7"
 
 nb_blank=0;
-echo "=============> NB TODO : $nb_todo";
-resp_base=$(run_virtuoso_cmd "SPARQL \
-SELECT count(DISTINCT ?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
-?s ?p ?o. \
-};");
+resp_base=$(run_virtuoso_cmd "SPARQL SELECT count(DISTINCT ?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { ?s ?p ?o. };");
 
 nb_base=$(get_answer_nb "$resp_base");
-echo "TO DO $resp_base";
+echo "TO DO $nb_base";
+
 while [ $nb_base -ne $nb_blank ];
     do
 
