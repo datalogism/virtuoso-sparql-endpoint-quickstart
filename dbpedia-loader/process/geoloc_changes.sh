@@ -17,6 +17,12 @@ while [ $nb_todo -ne 0 ];
  ################### SPARQL - ADD BLANK NODE FOR EACH RELATED PLACE
      resp_update=$(run_virtuoso_cmd "SPARQL \
      WITH <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates>\
+     DELETE {  ?s <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type;\
+      <http://www.georss.org/georss/point> ?point;\
+      <http://www.w3.org/2003/01/geo/wgs84_pos#lat> ?lat; \ 
+      <http://www.w3.org/2003/01/geo/wgs84_pos#long> ?long; \ 
+      <http://www.w3.org/2003/01/geo/wgs84_pos#geometry> ?geo. \
+     } \
      INSERT { ?s dbo:relatedPlaces [ \
      <http://www.w3.org/1999/02/22-rdf-syntax-ns#type> ?type; \
       <http://www.georss.org/georss/point> ?point; \
@@ -25,7 +31,7 @@ while [ $nb_todo -ne 0 ];
      <http://www.w3.org/2003/01/geo/wgs84_pos#geometry> ?geo; \
      ]. \ 
      } \
-     DELETE { ?s ?p ?o. } WHERE {\
+    WHERE {\
      SELECT ?s ?type ?geo ?lat ?long ?point \
      FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> \
      WHERE { \
