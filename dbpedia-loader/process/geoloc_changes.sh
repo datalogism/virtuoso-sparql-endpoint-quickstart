@@ -33,6 +33,6 @@ while [ $nb_new -gt $nb_last ];
      echo "=============> update";
      resp_georelated2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {?s dbo:relatedPlaces ?o. } ;");
      nb_new=$(get_answer_nb "$resp_georelated2");
-     echo "=============> NB TODO : $nb_todo";
+     echo "=============>  $nb_new > $nb_last ?";
 done
 
