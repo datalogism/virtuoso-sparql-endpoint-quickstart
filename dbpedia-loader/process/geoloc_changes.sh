@@ -26,10 +26,10 @@ while [ $nb_base -ne $nb_blank ];
      ]. \ 
      } \
     WHERE { \
-     SELECT ?s ?p ?o
+     SELECT ?s ?p ?o \
      FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> \
      WHERE { \
-     ?s ?p ?o.
+     ?s ?p ?o. \
      FILTER( ?p != dbo:relatedPlaces) \
      } LIMIT $limit \
      } ;");
