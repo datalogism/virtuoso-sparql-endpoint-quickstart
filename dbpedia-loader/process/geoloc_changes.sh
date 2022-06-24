@@ -2,10 +2,10 @@
 . ../virtuoso_fct.sh --source-only
 limit=500000;
 
-echo "=============> GEOLOC CHANGES NEW"
+echo "=============> GEOLOC CHANGES NEW 2"
 resp_georelated=$(run_virtuoso_cmd "SPARQL \
-SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
-?s ?p ?o. FILTER (!isBlank(?o))\
+SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { \
+?s ?p ?o. FILTER (!isBlank(?o)) \
 };");
 
 nb_todo=$(get_answer_nb "$resp_georelated");
@@ -46,11 +46,11 @@ while [ $nb_todo -ne 0 ];
      
      
      echo "=============> update";
-     resp_georelated=$(run_virtuoso_cmd "SPARQL \
-     SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
-     ?s ?p ?o. FILTER (!isBlank(?o))\
+     resp_georelated2=$(run_virtuoso_cmd "SPARQL \
+     SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { \
+     ?s ?p ?o. FILTER (!isBlank(?o))\ 
      };");
-     nb_todo=$(get_answer_nb "$resp_georelated");
+     nb_todo=$(get_answer_nb "$resp_georelated2");
      
      echo "=============> NB TODO : $nb_todo";
 done
