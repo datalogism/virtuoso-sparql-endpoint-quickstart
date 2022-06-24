@@ -4,10 +4,15 @@ limit=500000;
 
 echo "=============> GEOLOC CHANGES NEW 5"
 
-nb_last=0
-nb_new=1
+nb_blank=0;
 echo "=============> NB TODO : $nb_todo";
-while [ $nb_new -gt $nb_last ];
+resp_base=$(run_virtuoso_cmd "SPARQL \
+SELECT count(DISTINCT ?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
+?s ?p ?o. \
+};");
+
+nb_base=$(get_answer_nb "$resp_base");
+while [ $nb_base -ne $nb_last ];
     do
 
  ################### SPARQL - ADD BLANK NODE FOR EACH RELATED PLACE
@@ -31,8 +36,8 @@ while [ $nb_new -gt $nb_last ];
      
      nb_last=$nb_new;
      echo "=============> update";
-     resp_georelated2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {?s dbo:relatedPlaces ?o. } ;");
-     nb_new=$(get_answer_nb "$resp_georelated2");
-     echo "=============>  $nb_new > $nb_last ?";
+     resp_georelated2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(DISTINCT ?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {?s dbo:relatedPlaces ?o. } ;");
+     nb_blank=$(get_answer_nb "$resp_georelated2");
+     echo "=============>  $nb_base > $nb_blank ?";
 done
 
