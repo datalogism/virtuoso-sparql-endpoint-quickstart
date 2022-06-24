@@ -2,7 +2,7 @@
 . ../virtuoso_fct.sh --source-only
 limit=500000;
 
-echo "=============> GEOLOC CHANGES NEW 4"
+echo "=============> GEOLOC CHANGES NEW 5"
 
 nb_last=0
 nb_new=1
