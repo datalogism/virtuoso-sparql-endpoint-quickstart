@@ -2,7 +2,7 @@
 . ../virtuoso_fct.sh --source-only
 limit=500000;
 
-echo "=============> GEOLOC CHANGES"
+echo "=============> GEOLOC CHANGES NEW"
 resp_georelated=$(run_virtuoso_cmd "SPARQL \
 SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
 ?s ?p ?o. FILTER (!isBlank(?o))\
