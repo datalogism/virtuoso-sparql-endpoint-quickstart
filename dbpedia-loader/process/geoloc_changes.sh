@@ -3,7 +3,7 @@
 limit=500000;
 
 resp_georelated=$(run_virtuoso_cmd "SPARQL \
-SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
+SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
 ?s ?p ?o. FILTER (!isBlank(?o))\
 };");
 nb_todo=$(get_answer_nb "$resp_georelated");
@@ -36,7 +36,7 @@ while [ $nb_todo -ne 0 ];
      
      
      resp_georelated=$(run_virtuoso_cmd "SPARQL \
-     SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
+     SELECT count(?o) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE {\
      ?s ?p ?o. FILTER (!isBlank(?o))\
      };");
      nb_todo=$(get_answer_nb "$resp_georelated");
