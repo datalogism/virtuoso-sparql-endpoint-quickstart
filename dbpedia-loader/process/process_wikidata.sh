@@ -6,7 +6,7 @@ get_named_graph='SPARQL \
 SELECT ?o FROM <http://fr.dbpedia.org/graph/metadata> WHERE {\
 ?s sd:namedGraph ?o.\
 FILTER( ?o != <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-AND ?o != <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links>\
+AND ?o != <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> \
 AND STRSTARTS(STR(?o), "http://fr.dbpedia.org/graph/dbpedia_wikidata_")\
 )\
 };'
@@ -23,19 +23,19 @@ do
     last=$nb_global;
     
     ################### SPARQL - FLAG ALL THE RESOURCE HAVING A FRENCH RESSOURCE LINKED
-    resp2=$(run_virtuoso_cmd "SPARQL\
-    DEFINE sql:log-enable 2\
+    resp2=$(run_virtuoso_cmd "SPARQL \
+    DEFINE sql:log-enable 2 \
     WITH <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-    INSERT { ?y rdf:type dbo:frResource. }\
-    WHERE { SELECT ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>\
-    WHERE { ?s owl:sameAs ?y. FILTER NOT EXISTS { ?y rdf:type dbo:frResource }.\
-    FILTER(STRSTARTS(STR(?y), 'http://fr.dbpedia.org/') )\
+    INSERT { ?y rdf:type dbo:frResource. } \
+    WHERE { SELECT ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
+    WHERE { ?s owl:sameAs ?y. FILTER NOT EXISTS { ?y rdf:type dbo:frResource }. \
+    FILTER(STRSTARTS(STR(?y), 'http://fr.dbpedia.org/') ) \
     } LIMIT $limit\
     };");
     
     ################### SPARQL - COUNT FLAGGED RESOURCES
-    resp_count=$(run_virtuoso_cmd "SPARQL\
-    SELECT COUNT(?s)\
+    resp_count=$(run_virtuoso_cmd "SPARQL \
+    SELECT COUNT(?s) \
     FROM  <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
     WHERE { ?s rdf:type dbo:frResource };");    
     nb_global=$(get_answer_nb "$resp_count");
@@ -46,27 +46,27 @@ do
         while [ $nb_todo0 -ne 0 ]
         do
             ################### SPARQL - UPDATE AND CHANGE RELATIONS FROM WIKIDATA TO FRENCH RESOURCE AT SUBJECT SIDE	
-            resp_updategraph=$(run_virtuoso_cmd "SPARQL\
-	    DEFINE sql:log-enable 2\
-	    WITH <$graph>\
-	    DELETE { ?y ?p ?o. }\
-	    INSERT { ?s ?p ?o. }\
+            resp_updategraph=$(run_virtuoso_cmd "SPARQL \
+	    DEFINE sql:log-enable 2 \
+	    WITH <$graph> \
+	    DELETE { ?y ?p ?o. } \
+	    INSERT { ?s ?p ?o. } \
 	    WHERE { SELECT ?s ?p ?o ?y \
-	    WHERE {\
-	    { SELECT ?s ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>\
-	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:frResource }}\
-	    } . {\
+	    WHERE { \
+	    { SELECT ?s ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
+	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:frResource }} \
+	    } . { \
 	    SELECT ?y ?p ?o FROM <$graph> WHERE {?y ?p ?o } \
-	    }\
+	    } \
 	    } LIMIT $limit };");
 	    
             ################### SPARQL - COUNT SAME AS HAVING FLAG  AT SUBJECT SIDE
-            resp_todo0=$(run_virtuoso_cmd "SPARQL\
-	    SELECT COUNT(?y) WHERE {\
+            resp_todo0=$(run_virtuoso_cmd "SPARQL \
+	    SELECT COUNT(?y) WHERE { \
 	    { \
-	    SELECT ?s ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> 
+	    SELECT ?s ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
 	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:frResource }} \
-	    } . {\
+	    } . { \
 	    SELECT ?y ?p ?o FROM <$graph> WHERE {?y ?p ?o } \
 	    } };");
             nb_todo0=$(get_answer_nb "$resp_todo0");
@@ -80,25 +80,25 @@ do
         do
 	    
             ################### SPARQL - UPDATE AND CHANGE RELATIONS FROM WIKIDATA TO FRENCH RESOURCE AT OBJECT SIDE	
-            resp_updategraph=$(run_virtuoso_cmd "SPARQL\
-	    DEFINE sql:log-enable 2  WITH <$graph>\
-	    DELETE { ?s ?p ?wkd. }\
-	    INSERT { ?s ?p ?dbfr. }\
-	    WHERE { SELECT ?dbfr ?p ?s ?wkd WHERE {\
+            resp_updategraph=$(run_virtuoso_cmd "SPARQL \
+	    DEFINE sql:log-enable 2  WITH <$graph> \
+	    DELETE { ?s ?p ?wkd. } \
+	    INSERT { ?s ?p ?dbfr. } \
+	    WHERE { SELECT ?dbfr ?p ?s ?wkd WHERE { \
 	    {\
 	    SELECT ?dbfr ?wkd FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
 	    WHERE { ?wkd owl:sameAs ?dbfr. FILTER EXISTS { ?dbfr rdf:type  dbo:frResource }} \
-	    } . {\
+	    } . { \
 	    SELECT ?s ?p ?wkd FROM <$graph> WHERE {?s ?p ?wkd } } \
 	    }  LIMIT $limit };");
 	    
             ################### SPARQL - COUNT SAME AS HAVING FLAG  AT OBJECTS SIDE
 	    resp_todo0=$(run_virtuoso_cmd "SPARQL \
-	    SELECT COUNT(?wkd) WHERE {\
-	    {SELECT ?dbfr ?wkd FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>\
+	    SELECT COUNT(?wkd) WHERE { \
+	    {SELECT ?dbfr ?wkd FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
 	    WHERE { ?wkd owl:sameAs ?dbfr. FILTER EXISTS { ?dbfr rdf:type  dbo:frResource }} \
-	    } . {\
-	    SELECT ?s ?p ?wkd FROM <$graph> WHERE {?s ?p ?wkd } }\
+	    } . { \
+	    SELECT ?s ?p ?wkd FROM <$graph> WHERE {?s ?p ?wkd } } \
 	    };");
 	    nb_todo0=$(get_answer_nb "$resp_todo0");
 	    echo "$graph need to change objects : $nb_todo0";
@@ -107,11 +107,11 @@ do
     
     ################### SPARQL - INVERSE SAMEAS IN dbpedia_wikidata_sameas-all-wikis graph
     resp3=$(run_virtuoso_cmd "SPARQL \
-    DEFINE sql:log-enable 2 WITH <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>\
-    INSERT { ?y owl:sameAs ?s. }\
-    WHERE {\
-    SELECT ?y ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>\
-    WHERE { ?s owl:sameAs ?y. FILTER EXISTS { ?y rdf:type dbo:frResource }\
+    DEFINE sql:log-enable 2 WITH <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
+    INSERT { ?y owl:sameAs ?s. } \
+    WHERE { \
+    SELECT ?y ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
+    WHERE { ?s owl:sameAs ?y. FILTER EXISTS { ?y rdf:type dbo:frResource } \
     } LIMIT $limit};");
     echo ">>>>>> LINK TO FR RESSOURCE";
     nb_todo=1;
@@ -121,13 +121,13 @@ do
     	################### SPARQL - LINK TO FRENCH RESOURCES THE OTHERS LINGUISTICS RESOURCES  IN dbpedia_wikidata_sameas-all-wikis graph
         resp4=$(run_virtuoso_cmd "SPARQL DEFINE sql:log-enable 2 \
 	WITH <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>  \
-	DELETE { ?s owl:sameAs ?p. }\
-	INSERT { ?y owl:sameAs ?p. }\
-	WHERE { SELECT ?s ?y ?p FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {\
+	DELETE { ?s owl:sameAs ?p. } \
+	INSERT { ?y owl:sameAs ?p. } \
+	WHERE { SELECT ?s ?y ?p FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { \
 	?y rdf:type dbo:frResource. \
-	?s owl:sameAs ?y.\
+	?s owl:sameAs ?y. \
 	?s owl:sameAs ?p. \
-	FILTER (?y != ?p )\
+	FILTER (?y != ?p ) \
 	} LIMIT $limit };");
         resp_todo=$(run_virtuoso_cmd "SPARQL SELECT COUNT(*) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:frResource. ?s owl:sameAs ?y. ?s owl:sameAs ?p. FILTER (?y != ?p ) };");
         nb_todo=$(get_answer_nb "$resp_todo");
@@ -141,11 +141,11 @@ do
     	################### SPARQL - INVERSE SAMEAS
         resp5=$(run_virtuoso_cmd "SPARQL DEFINE sql:log-enable 2 \
 	WITH <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis>  \
-	DELETE { ?s owl:sameAs ?y. }\
-	INSERT { ?y owl:sameAs ?s. }\
+	DELETE { ?s owl:sameAs ?y. } \
+	INSERT { ?y owl:sameAs ?s. } \
 	WHERE { \
-	SELECT ?y ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {\
-	?y rdf:type dbo:frResource.\
+	SELECT ?y ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { \
+	?y rdf:type dbo:frResource. \
 	?s owl:sameAs ?y \
 	} LIMIT $limit };");
         resp_todo2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:frResource. ?s owl:sameAs ?y. };");
