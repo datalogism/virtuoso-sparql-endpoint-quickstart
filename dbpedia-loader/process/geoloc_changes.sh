@@ -2,13 +2,13 @@
 . ../virtuoso_fct.sh --source-only
 limit=500000;
 
-echo "=============> GEOLOC CHANGES NEW 7"
+echo "=============> GEOLOC CHANGES NEW 8"
 
 nb_blank=0;
 resp_base=$(run_virtuoso_cmd "SPARQL SELECT count(DISTINCT ?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { ?s ?p ?o. FILTER( !isBlank(?s) )};");
 
-nb_base=$(get_answer_nb "$resp_base");
-echo "TO DO $nb_base";
+nb_blank=$(get_answer_nb "$resp_base");
+echo "TO DO $nb_blank";
 
 while [ $nb_blank -ne 0 ];
     do
