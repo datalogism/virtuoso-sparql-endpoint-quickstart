@@ -50,10 +50,17 @@ test_connection () {
    done
 }
 get_answer_nb() {
-   resp=$1;
-   nb=$(echo $resp | grep -o -P '(?<=_\s)\d*(?=\s)');
    re='^[0-9]+$'
+   resp=$1;
    if ! [[ $nb =~ $re ]] ; then
+       nb=$(echo $resp | awk '{print $4}')
+   fi       
+   if ! [[ $nb =~ $re ]] ; then
+        nb=$(echo $resp |  awk '{print $5}')
+   fi
+   if ! [[ $nb =~ $re ]] ; then
+        nb=$(echo $resp | grep -o -P '(?<=_\s)\d*(?=\s)');
+   else
      echo "$resp";
    fi
    echo "$nb";
