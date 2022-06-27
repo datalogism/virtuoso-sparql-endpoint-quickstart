@@ -60,7 +60,11 @@ get_answer_nb() {
    fi
    if ! [[ $nb =~ $re ]] ; then
         nb=$(echo $resp | grep -o -P '(?<=_\s)\d*(?=\s)');
-   else
+   fi
+   if ! [[ $nb =~ $re ]] ; then
+        nb=$(echo $resp | grep -o -P '(?<=\n\s)\d*(?=\n\s)');
+   fi
+   if ! [[ $nb =~ $re ]] ; then
      echo "$resp";
    fi
    echo "$nb";
