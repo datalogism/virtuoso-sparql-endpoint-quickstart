@@ -62,7 +62,7 @@ do
      
         date=$(echo $entry  | grep -Eo '[[:digit:]]{4}.[[:digit:]]{2}.[[:digit:]]{2}');  
         ################### SPARQL - GET NUMBER OF DATASET FROM DATE IF SUM NEEDED
-        resp=$(run_virtuoso_cmd "SPARQL\
+        resp=$(run_virtuoso_cmd "SPARQL PREFIX void: <http://rdfs.org/ns/void#>  PREFIX prov: <http://www.w3.org/ns/prov#> \
         SELECT COUNT(?d) FROM <${DOMAIN}/graph/metadata> WHERE {\
         ?s prov:wasGeneratedAtTime ?d.\
         FILTER(?s = <${DOMAIN}/graph/${final_name}> )\
@@ -72,13 +72,13 @@ do
         if [ "$nb" -eq "0" ];then
         
         ###################  SPARQL - INSERT DATE PUBLICATION
-           run_virtuoso_cmd "SPARQL \
+           run_virtuoso_cmd "SPARQL PREFIX void: <http://rdfs.org/ns/void#>  PREFIX prov: <http://www.w3.org/ns/prov#> \
            INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> prov:wasGeneratedAtTime '${date}'^^xsd:date .\
            <${DOMAIN}/graph/${final_name}>  schema:datePublished '${date}'^^xsd:date .\
            };"
         fi
         ###################  SPARQL - INSERT DUMP FILE NAME
-        run_virtuoso_cmd "SPARQL \
+        run_virtuoso_cmd "SPARQL PREFIX void: <http://rdfs.org/ns/void#>  PREFIX prov: <http://www.w3.org/ns/prov#> \
         INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> void:dataDump <http://prod-dbpedia.inria.fr/dumps/lastUpdate/$fn> };"
         fi
     fi;
