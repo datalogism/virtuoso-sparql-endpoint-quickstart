@@ -23,7 +23,7 @@ while [ $nb_blank -ne 0 ];
       FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> \
       WHERE { \
        ?s ?p ?o. \
-       . FILTER( ?p != dbo:relatedPlaces). FILTER( !isBlank(?s) )  \
+       FILTER( ?p != dbo:relatedPlaces). FILTER( !isBlank(?s) )  \
       } LIMIT $limit \
      } ;");
      
