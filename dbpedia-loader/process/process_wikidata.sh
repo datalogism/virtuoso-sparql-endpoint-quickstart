@@ -23,7 +23,7 @@ do
     WHERE { SELECT ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
     WHERE { ?s owl:sameAs ?y. FILTER NOT EXISTS { ?y rdf:type dbo:frResource }. \
     FILTER(STRSTARTS(STR(?y), 'http://fr.dbpedia.org/') ) \
-    } LIMIT $limit\
+    } LIMIT $limit \
     };");
     
     ################### SPARQL - COUNT FLAGGED RESOURCES
