@@ -2,8 +2,7 @@
 . ../virtuoso_fct.sh --source-only
 limit=500000;
 ################### SPARQL - GET ALL NAMED WIKIDATA GRAPH
-get_named_graph='SPARQL SELECT ?o FROM <http://fr.dbpedia.org/graph/metadata> WHERE { ?s sd:namedGraph ?o. FILTER( ?o != <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-AND ?o != <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> AND STRSTARTS(STR(?o), "http://fr.dbpedia.org/graph/dbpedia_wikidata_") ) };'
+get_named_graph='SPARQL SELECT ?o FROM <http://fr.dbpedia.org/graph/metadata> WHERE { ?s sd:namedGraph ?o. FILTER( ?o != <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> AND ?o != <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> AND STRSTARTS(STR(?o), "http://fr.dbpedia.org/graph/dbpedia_wikidata_") ) };'
 resp=$(run_virtuoso_cmd "$get_named_graph");
 graph_list=$(echo $resp | tr " " "\n" | grep -E "\/graph\/");
 
