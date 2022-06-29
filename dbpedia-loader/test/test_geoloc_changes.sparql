@@ -1,0 +1,15 @@
+## FIRST CHECK
+SELECT ?s ?p ?o  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { ?s ?p ?o. } ORDER BY RAND() LIMIT 100
+SELECT ?s ?p ?o  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { ?s dbo:relatedPlaces [ ?p ?o ] . } 
+
+## COUNT SUBJ WITH BLANK NODES 
+SELECT COUNT(DISTINCT ?s)  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { ?s dbo:relatedPlaces [ ?p ?o ] . }
+## COUNT TRIPLES HAVING prop dbo:relatedPlaces 
+SELECT COUNT(DISTINCT ?s)  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { 
+?s ?p ?o .
+FILTER(?p = dbo:relatedPlaces )
+ }
+
+## EXAMPLE 
+SELECT ?p ?o  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { <http://fr.dbpedia.org/resource/Deuxième_bras_des_Iroquois> ?p ?o . }
+SELECT ?p ?o  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_geo-coordinates> WHERE { <http://fr.dbpedia.org/resource/Deuxième_bras_des_Iroquois> dbo:relatedPlaces [ ?p ?o ] . }
