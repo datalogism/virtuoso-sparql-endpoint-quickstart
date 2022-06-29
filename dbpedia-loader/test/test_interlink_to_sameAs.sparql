@@ -1,0 +1,8 @@
+#### COUNT dbo:wikiPageInterLanguageLink
+SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE {
+?s dbo:wikiPageInterLanguageLink ?o 
+}
+### COUNT owl:sameAs
+SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE {
+?s owl:sameAs ?o 
+}
