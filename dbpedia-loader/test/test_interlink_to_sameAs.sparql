@@ -1,3 +1,7 @@
+### FIRST CHECK 
+
+SELECT ?s ?p ?o  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE { ?s ?p ?o. } ORDER BY RAND() LIMIT 100
+
 #### COUNT dbo:wikiPageInterLanguageLink
 SELECT count(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links> WHERE {
 ?s dbo:wikiPageInterLanguageLink ?o 
