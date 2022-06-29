@@ -1,0 +1,7 @@
+
+SELECT ?s ?p ?o  FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s ?p ?o. } ORDER BY RAND() LIMIT 100
+
+## COUNT frResource
+SELECT COUNT(?s) 
+    FROM  <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> 
+    WHERE { ?s rdf:type dbo:frResource }
