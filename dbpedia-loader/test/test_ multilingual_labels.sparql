@@ -1,0 +1,1 @@
+select ?S ?p ?o FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where { ?S ?p ?o  FILTER(lang(?o)='en' AND STRSTARTS(STR(?S), 'http://fr.dbpedia.org/') ) } 
