@@ -82,7 +82,7 @@ echo "INTERLINK AS SAME AS"
 
 echo "PROCESS WIKIDATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/process_wikidata.sh
+#/bin/bash ./process/process_wikidata.sh
 
 echo "MULTI LANG DATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
