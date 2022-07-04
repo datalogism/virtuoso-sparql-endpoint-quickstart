@@ -2,10 +2,9 @@
 . ../virtuoso_fct.sh --source-only
 
 limit=500000;
-echo "============ multilingual_labels.sh"
+echo "============ multilingual_labels.sh 04/07/2022"
 ################### SPARQL - GET LANG LIST
-resp=$(run_virtuoso_cmd "SPARQL \
-SELECT DISTINCT CONCAT('lang_',?lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where { ?s rdfs:label ?o. BIND (lang(?o) AS ?lang) };";);
+resp=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT CONCAT('lang_',?lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where { ?s rdfs:label ?o. BIND (lang(?o) AS ?lang) };";);
 echo $resp;
 lang_list=$(echo $resp | tr " " "\n" | grep -oP "lang_\K(.*)");
 
