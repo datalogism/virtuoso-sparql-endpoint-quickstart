@@ -10,7 +10,8 @@ lang_list=$(echo $resp | tr " " "\n" | grep -oP "lang_\K(.*)");
 
 for lang in ${lang_list[@]}; do
     if [[ $lang != 'fr' ]]; then
-	  echo "============>>>>>>>>>> $lang need to be treaten";    
+	  echo "============>>>>>>>>>> $lang need to be treaten"; 
+    fi
     Lang="${lang[@]^}"
     nb_global=1;
     last=0;
@@ -27,7 +28,7 @@ for lang in ${lang_list[@]}; do
         SELECT COUNT(?s) \
         FROM  <http://fr.dbpedia.org/graph/dbpedia_generic_labels> \
         WHERE { ?s rdf:type dbo:${Lang}FrResource. };");    
-        nb_global=$(get_answer_nb "$resp_count");
+      nb_global=$(get_answer_nb "$resp_count");
     done
    
  
