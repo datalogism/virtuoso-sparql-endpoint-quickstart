@@ -19,9 +19,9 @@ do
     resp2=$(run_virtuoso_cmd "SPARQL \
     DEFINE sql:log-enable 2 \
     WITH <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-    INSERT { ?y rdf:type dbo:wikidatFrResource. } \
+    INSERT { ?y rdf:type dbo:WdtFrResource. } \
     WHERE { SELECT ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-    WHERE { ?s owl:sameAs ?y. FILTER NOT EXISTS { ?y rdf:type dbo:wikidatFrResource }. \
+    WHERE { ?s owl:sameAs ?y. FILTER NOT EXISTS { ?y rdf:type dbo:WdtFrResource }. \
     FILTER(STRSTARTS(STR(?y), 'http://fr.dbpedia.org/') ) \
     } LIMIT $limit \
     };");
@@ -30,7 +30,7 @@ do
     resp_count=$(run_virtuoso_cmd "SPARQL \
     SELECT COUNT(?s) \
     FROM  <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-    WHERE { ?s rdf:type dbo:wikidatFrResource };");    
+    WHERE { ?s rdf:type dbo:WdtFrResource };");    
     nb_global=$(get_answer_nb "$resp_count");
     
     echo ">>>>>> UPDATE EACH GRAPH SUBJECTS";
@@ -47,7 +47,7 @@ do
 	    WHERE { SELECT ?s ?p ?o ?y \
 	    WHERE { \
 	    { SELECT ?s ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:wikidatFrResource }} \
+	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:WdtFrResource }} \
 	    } . { \
 	    SELECT ?y ?p ?o FROM <$graph> WHERE {?y ?p ?o } \
 	    } \
@@ -58,7 +58,7 @@ do
 	    SELECT COUNT(?y) WHERE { \
 	    { \
 	    SELECT ?s ?y FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:wikidatFrResource }} \
+	    WHERE { ?y owl:sameAs ?s. FILTER EXISTS { ?s rdf:type  dbo:WdtFrResource }} \
 	    } . { \
 	    SELECT ?y ?p ?o FROM <$graph> WHERE {?y ?p ?o } \
 	    } };");
@@ -80,7 +80,7 @@ do
 	    WHERE { SELECT ?dbfr ?p ?s ?wkd WHERE { \
 	    {\
 	    SELECT ?dbfr ?wkd FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-	    WHERE { ?wkd owl:sameAs ?dbfr. FILTER EXISTS { ?dbfr rdf:type  dbo:wikidatFrResource }} \
+	    WHERE { ?wkd owl:sameAs ?dbfr. FILTER EXISTS { ?dbfr rdf:type  dbo:WdtFrResource }} \
 	    } . { \
 	    SELECT ?s ?p ?wkd FROM <$graph> WHERE {?s ?p ?wkd } } \
 	    }  LIMIT $limit };");
@@ -89,7 +89,7 @@ do
 	    resp_todo0=$(run_virtuoso_cmd "SPARQL \
 	    SELECT COUNT(?wkd) WHERE { \
 	    {SELECT ?dbfr ?wkd FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-	    WHERE { ?wkd owl:sameAs ?dbfr. FILTER EXISTS { ?dbfr rdf:type  dbo:wikidatFrResource }} \
+	    WHERE { ?wkd owl:sameAs ?dbfr. FILTER EXISTS { ?dbfr rdf:type  dbo:WdtFrResource }} \
 	    } . { \
 	    SELECT ?s ?p ?wkd FROM <$graph> WHERE {?s ?p ?wkd } } \
 	    };");
@@ -104,7 +104,7 @@ do
     INSERT { ?y owl:sameAs ?s. } \
     WHERE { \
     SELECT ?y ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> \
-    WHERE { ?s owl:sameAs ?y. FILTER EXISTS { ?y rdf:type dbo:wikidatFrResource } \
+    WHERE { ?s owl:sameAs ?y. FILTER EXISTS { ?y rdf:type dbo:WdtFrResource } \
     } LIMIT $limit};");
     echo ">>>>>> LINK TO FR RESSOURCE";
     nb_todo=1;
@@ -117,12 +117,12 @@ do
 	DELETE { ?s owl:sameAs ?p. } \
 	INSERT { ?y owl:sameAs ?p. } \
 	WHERE { SELECT ?s ?y ?p FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { \
-	?y rdf:type dbo:wikidatFrResource. \
+	?y rdf:type dbo:WdtFrResource. \
 	?s owl:sameAs ?y. \
 	?s owl:sameAs ?p. \
 	FILTER (?y != ?p ) \
 	} LIMIT $limit };");
-        resp_todo=$(run_virtuoso_cmd "SPARQL SELECT COUNT(*) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:wikidatFrResource. ?s owl:sameAs ?y. ?s owl:sameAs ?p. FILTER (?y != ?p ) };");
+        resp_todo=$(run_virtuoso_cmd "SPARQL SELECT COUNT(*) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:WdtFrResource. ?s owl:sameAs ?y. ?s owl:sameAs ?p. FILTER (?y != ?p ) };");
         nb_todo=$(get_answer_nb "$resp_todo");
         echo $nb_todo;
     done
@@ -138,10 +138,10 @@ do
 	INSERT { ?y owl:sameAs ?s. } \
 	WHERE { \
 	SELECT ?y ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { \
-	?y rdf:type dbo:wikidatFrResource. \
+	?y rdf:type dbo:WdtFrResource. \
 	?s owl:sameAs ?y \
 	} LIMIT $limit };");
-        resp_todo2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:wikidatFrResource. ?s owl:sameAs ?y. };");
+        resp_todo2=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s) FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE {?y rdf:type dbo:WdtFrResource. ?s owl:sameAs ?y. };");
         nb_todo2=$(get_answer_nb "$resp_todo2");
     done
 done
