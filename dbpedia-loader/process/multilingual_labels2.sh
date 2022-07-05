@@ -24,7 +24,7 @@ for lang in ${lang_list[@]}; do
 			for graph in ${graph_list[@]}; do
 				echo ">>>>>>>>>> GRAPH : $graph"; 
 				 ################### SPARQL - FLAG  WIKILINKS FOUND
-				resp_wikilinks_flag=$(run_virtuoso_cmd "SPARQL DEFINE sql:log-enable 2 WITH <http://fr.dbpedia.org/graph/dbpedia_generic_labels> INSERT { ?s_lang rdf:type dbo:${Lang}FrResource. } WHERE {SELECT ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {?s_lang rdfs:label ?o_lang. FILTER NOT EXISTS { ?s_lang rdf:type dbo:${Lang}FrResource }. FILTER(lang(?o_lang)='$lang'). {SELECT ?s_fr ?s_lang FROM <$graph> WHERE { ?s_fr owl:sameAs ?s_lang } } } LIMIT $limit };");
+				resp_wikilinks_flag=$(run_virtuoso_cmd "SPARQL DEFINE sql:log-enable 2 WITH <http://fr.dbpedia.org/graph/dbpedia_generic_labels> INSERT { ?s_fr rdf:type dbo:${Lang}FrResource. } WHERE {SELECT ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {?s_lang rdfs:label ?o_lang. FILTER NOT EXISTS { ?s_lang rdf:type dbo:${Lang}FrResource }. FILTER(lang(?o_lang)='$lang'). {SELECT ?s_fr ?s_lang FROM <$graph> WHERE { ?s_fr owl:sameAs ?s_lang } } } LIMIT $limit };");
 			done
 			
 			resp_count=$(run_virtuoso_cmd "SPARQL \
