@@ -12,6 +12,7 @@ for lang in ${lang_list[@]}; do
     if [[ $lang != 'fr' ]]; then
 	  echo "$lang need to be treaten";
 	  
+	  echo "WIKILINKS PART OF MULTILANG"
           ################### SPARQL - COUNT LANG TO DO VIA WIKILINKS
 	  resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE { \
 	  ?s_lang rdfs:label ?o_lang. \
@@ -44,6 +45,7 @@ for lang in ${lang_list[@]}; do
     	      nb_wikilinks=$(get_answer_nb "$resp_todo");
 	      echo $nb_wikilinks;
 	  done
+	  echo "WIKIDATA PART OF MULTILANG"
 	  ################### SPARQL - COUNT LANG TO DO VIA WIKIDATA
 	  resp_todo=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT COUNT(?s_lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE { ?s_lang rdfs:label ?o_lang. FILTER(lang(?o_lang)='$lang'). { SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang } } } ;");
 	  
