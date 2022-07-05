@@ -8,7 +8,7 @@ echo "============ multilingual_labels2.sh V3 "
 resp=$(run_virtuoso_cmd "SPARQL SELECT DISTINCT CONCAT('lang_',?lang) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> where { ?s rdfs:label ?o. BIND (lang(?o) AS ?lang) };";);
 echo $resp;
 lang_list=$(echo $resp | tr " " "\n" | grep -oP "lang_\K(.*)");
-graph_list=("http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links" "http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis")
+#graph_list=("http://fr.dbpedia.org/graph/dbpedia_generic_interlanguage-links" "http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis")
 
 for lang in ${lang_list[@]}; do
 	if [[ $lang != 'fr' ]]; then
