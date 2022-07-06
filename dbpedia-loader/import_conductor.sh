@@ -2,7 +2,7 @@
 
 . ./virtuoso_fct.sh --source-only
 
-echo " IMPORT CONDUCTOR version - 05/06/2022 new";
+echo " IMPORT CONDUCTOR version - 06/06/2022 new";
 # ADD A LOCKER FOR MONITORING THE PROCESS
 touch /opt/virtuoso-opensource/database/loader_locker.lck;
 
