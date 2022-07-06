@@ -72,7 +72,7 @@ do
         if [ "$nb" -eq "0" ];then
         
         ###################  SPARQL - INSERT DATE PUBLICATION
-           run_virtuoso_cmd "SPARQL PREFIX void: <http://rdfs.org/ns/void#>  PREFIX prov: <http://www.w3.org/ns/prov#> \
+           run_virtuoso_cmd "SPARQL PREFIX void: <http://rdfs.org/ns/void#>  PREFIX prov: <http://www.w3.org/ns/prov#> PREFIX schema: <http://schema.org/> \
            INSERT INTO <${DOMAIN}/graph/metadata> {  <${DOMAIN}/graph/${final_name}> prov:wasGeneratedAtTime '${date}'^^xsd:date .\
            <${DOMAIN}/graph/${final_name}>  schema:datePublished '${date}'^^xsd:date .\
            };"
