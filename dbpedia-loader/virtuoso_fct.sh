@@ -6,17 +6,22 @@ port=$STORE_ISQL_PORT
 user="dba"
 
 run_virtuoso_cmd () {
- VIRT_OUTPUT=`echo "$1" | "$bin" -H "$host" -S "$port" -U "$user" -P "$STORE_DBA_PASSWORD" 2>&1`
- VIRT_RETCODE=$?
- if [[ $VIRT_RETCODE -eq 0 ]]; then
-   echo "$VIRT_OUTPUT" | tail -n+5 | perl -pe 's|^SQL> ||g'
-   return 0
- else
-   echo -e "[ERROR] running the these commands in virtuoso:\n$1\nerror code: $VIRT_RETCODE\noutput:"
-   echo "$VIRT_OUTPUT"
-   let 'ret = VIRT_RETCODE + 128'
-   return $ret
- fi
+ NB_TRY=3
+ for i in {1..$NB_TRY}
+  do
+   VIRT_OUTPUT=`echo "$1" | "$bin" -H "$host" -S "$port" -U "$user" -P "$STORE_DBA_PASSWORD" 2>&1`
+   VIRT_RETCODE=$?
+   if [[ $VIRT_RETCODE -eq 0 ]]; then
+     echo "$VIRT_OUTPUT" | tail -n+5 | perl -pe 's|^SQL> ||g'
+     i=$NB_TRY
+     return 0
+   else
+     echo -e "[ERROR] running the these commands in virtuoso:\n$1\nerror code: $VIRT_RETCODE\noutput:"
+     echo "$VIRT_OUTPUT"
+     #let 'ret = VIRT_RETCODE + 128'
+     #return $ret
+   fi
+  done
 }
 
 wait_for_download() {
