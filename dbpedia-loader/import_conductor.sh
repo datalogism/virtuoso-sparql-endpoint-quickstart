@@ -75,19 +75,19 @@ run_virtuoso_cmd "$load_cmds";
 
 echo "CHANGE GEOLOC RELATED SHAPE"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-#/bin/bash ./process/geoloc_changes.sh
+/bin/bash ./process/geoloc_changes.sh
 echo "INTERLINK AS SAME AS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-#/bin/bash ./process/interlink_to_sameAs.sh
+/bin/bash ./process/interlink_to_sameAs.sh
 echo "PROCESS WIKIDATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-#/bin/bash ./process/process_wikidata.sh
+/bin/bash ./process/process_wikidata2.sh
 echo "MULTI LANG DATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/multilingual_labels2.sh
 echo "COMPUTE STATS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-#/bin/bash ./process/stats_process.sh
+/bin/bash ./process/stats_process.sh
 
 
 echo "[INFO] making checkpoint..."
