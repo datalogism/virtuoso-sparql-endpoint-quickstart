@@ -88,7 +88,9 @@ echo "MULTI LANG DATA"
 echo "COMPUTE STATS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/stats_process.sh
-
+echo "SAVE DUMPS"
+############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
+/bin/bash ./process/dumps_export.sh
 
 echo "[INFO] making checkpoint..."
 run_virtuoso_cmd 'checkpoint;'
