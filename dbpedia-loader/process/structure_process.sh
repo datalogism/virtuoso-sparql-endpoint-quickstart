@@ -85,6 +85,8 @@ do
     fi;
 done
 
+## CLEAN METADATA GRAPH
+resp=$(run_virtuoso_cmd "SPARQL DROP GRAPH <${DOMAIN}/graph/metadata>;");
 ## CREATE SUBGRAPHS
 run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_CREATE ('${DOMAIN}',1);"
 run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_INS ('${DOMAIN}','${DOMAIN}/graph/metadata');"
