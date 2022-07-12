@@ -72,7 +72,8 @@ checkpoint_interval(60);
 EOF`
 run_virtuoso_cmd "$load_cmds";
 
-
+run_virtuoso_cmd "log_enable(2)";
+run_virtuoso_cmd "checkpoint_interval(-1)";
 echo "CHANGE GEOLOC RELATED SHAPE"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/geoloc_changes.sh
@@ -109,5 +110,6 @@ run_virtuoso_cmd 'urilbl_ac_init_db();'
 run_virtuoso_cmd 's_rank();'
 echo "[INFO] End of process"
 rm "/opt/virtuoso-opensource/database/loader_locker.lck";
-
+run_virtuoso_cmd 'log_enable(1)';
+run_virtuoso_cmd 'checkpoint_interval(60)';
 echo "[INFO] LOCKER DELETED... SEE YOU !"
