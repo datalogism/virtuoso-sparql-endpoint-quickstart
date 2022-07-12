@@ -33,7 +33,7 @@ for lang in ${lang_list[@]}; do
 		while [ $nb_global_wkd -ne $last_wkd ]
 		do
 			last_wkd=$nb_global_wkd;
-			resp_wikilinks_flag=$(run_virtuoso_cmd "SPARQL  WITH <http://fr.dbpedia.org/graph/dbpedia_generic_labels> DELETE { ?s_lang rdfs:label ?o_lang. } INSERT { ?s_fr rdf:type dbo:${Lang}FrResource. ?s_fr rdfs:label ?o_lang.} WHERE {SELECT  ?s_fr ?s_lang ?o_lang  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {?s_lang rdfs:label ?o_lang. {SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang. ?s_fr rdf:type  dbo:frResource } } . FILTER NOT EXISTS { ?s_fr rdf:type  dbo:${Lang}FrResource } . FILTER(lang(?o_lang)='$lang') } LIMIT $limit };");
+			resp_wikilinks_flag=$(run_virtuoso_cmd "SPARQL  WITH <http://fr.dbpedia.org/graph/dbpedia_generic_labels> DELETE { ?s_lang rdfs:label ?o_lang. } INSERT { ?s_fr rdf:type dbo:${Lang}FrResource. ?s_fr rdfs:label ?o_lang.} WHERE {SELECT  ?s_fr ?s_lang ?o_lang  FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels>  WHERE {?s_lang rdfs:label ?o_lang. {SELECT ?s_fr ?s_lang FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> WHERE { ?s_fr owl:sameAs ?s_lang. ?s_fr rdf:type  dbo:WdtFrResource } } . FILTER NOT EXISTS { ?s_fr rdf:type  dbo:${Lang}FrResource } . FILTER(lang(?o_lang)='$lang') } LIMIT $limit };");
 			resp_count=$(run_virtuoso_cmd "SPARQL SELECT COUNT(?s_fr) FROM <http://fr.dbpedia.org/graph/dbpedia_generic_labels> WHERE { ?s_fr rdf:type dbo:${Lang}FrResource };");
 			nb_global_wkd=$(get_answer_nb "$resp_count");
 			echo ">>> nb flags WKD : $nb_global_wkd";
