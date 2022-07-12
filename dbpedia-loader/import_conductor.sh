@@ -77,18 +77,33 @@ run_virtuoso_cmd "checkpoint_interval(-1)";
 echo "CHANGE GEOLOC RELATED SHAPE"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/geoloc_changes.sh
+echo "---checkpoint"
+run_virtuoso_cmd 'checkpoint;'
+
 echo "INTERLINK AS SAME AS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/interlink_to_sameAs.sh
+echo "---checkpoint"
+run_virtuoso_cmd 'checkpoint;'
+
 echo "PROCESS WIKIDATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/process_wikidata2.sh
+echo "---checkpoint"
+run_virtuoso_cmd 'checkpoint;'
+
 echo "MULTI LANG DATA"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/multilingual_labels2.sh
+echo "---checkpoint"
+run_virtuoso_cmd 'checkpoint;'
+
 echo "COMPUTE STATS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/stats_process.sh
+echo "---checkpoint"
+run_virtuoso_cmd 'checkpoint;'
+
 echo "SAVE DUMPS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 /bin/bash ./process/dumps_export.sh
