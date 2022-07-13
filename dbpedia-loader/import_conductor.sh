@@ -105,7 +105,7 @@ echo "COMPUTE STATS"
 echo "---checkpoint"
 run_virtuoso_cmd 'checkpoint;'
 
-echo "SAVE DUMPS"
+#echo "SAVE DUMPS"
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
 #/bin/bash ./process/dumps_export.sh
 
