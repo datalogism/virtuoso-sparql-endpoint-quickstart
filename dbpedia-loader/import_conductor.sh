@@ -2,6 +2,15 @@
 
 . ./virtuoso_fct.sh --source-only
 
+#### PROCESS COMMANDS 
+if [ -z ${PROCESS_STRUCTURE+x} ]; then PROCESS_STRUCTURE=1; fi
+if [ -z ${PROCESS_GEOLOC+x} ]; then PROCESS_GEOLOC=1; fi
+if [ -z ${PROCESS_INTERLINKSAMEAS+x} ]; then PROCESS_INTERLINKSAMEAS=1; fi
+if [ -z ${PROCESS_WIKIDATA+x} ]; then PROCESS_WIKIDATA=1; fi
+if [ -z ${PROCESS_MULTILANG+x} ]; then PROCESS_MULTILANG=1; fi
+if [ -z ${PROCESS_STATS+x} ]; then PROCESS_STATS=1; fi
+if [ -z ${PROCESS_DUMPS+x} ]; then PROCESS_DUMPS=1; fi
+
 echo " IMPORT CONDUCTOR version - 06/06/2022 last fix";
 # ADD A LOCKER FOR MONITORING THE PROCESS
 touch /opt/virtuoso-opensource/database/loader_locker.lck;
@@ -26,8 +35,12 @@ if [ $? -eq 2 ]; then
 fi
 
 ############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/structure_process.sh
-
+if [ $PROCESS_STRUCTURE == 1 ] ; then
+   echo ">>> PROCESS_STRUCTURE unabled"
+   /bin/bash ./process/structure_process.sh
+else
+   echo ">>> PROCESS_STRUCTURE disabled"
+fi
 
 ############## VIRTUOSO CONFIG
 echo "[INFO] Setting 'dbp_decode_iri' registry entry to 'on'"
@@ -75,39 +88,65 @@ run_virtuoso_cmd "$load_cmds";
 run_virtuoso_cmd "log_enable(2)";
 run_virtuoso_cmd "checkpoint_interval(-1)";
 
-echo "CHANGE GEOLOC RELATED SHAPE"
-############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/geoloc_changes.sh
-echo "---checkpoint"
-run_virtuoso_cmd 'checkpoint;'
 
-echo "INTERLINK AS SAME AS"
-############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/interlink_to_sameAs.sh
-echo "---checkpoint"
-run_virtuoso_cmd 'checkpoint;'
+############## CHANGE GEOLOC COORD FROM TRIPLE TO BLANK NODE
+if [ $PROCESS_GEOLOC == 1 ] ; then
+   echo ">>> PROCESS_GEOLOC unabled"
+   /bin/bash ./process/geoloc_changes.sh
+   echo "---checkpoint"
+   run_virtuoso_cmd 'checkpoint;'
+else
+   echo ">>> PROCESS_GEOLOC disabled"
+fi
 
-echo "PROCESS WIKIDATA"
-############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/process_wikidata2.sh
-echo "---checkpoint"
-run_virtuoso_cmd 'checkpoint;'
+############## DUPLICATE INTERLINK AS SAMEAS
+if [ $PROCESS_INTERLINKSAMEAS == 1 ] ; then
+   echo ">>> PROCESS_INTERLINKSAMEAS unabled"
+   /bin/bash ./process/interlink_to_sameAs.sh
+   echo "---checkpoint"
+   run_virtuoso_cmd 'checkpoint;'
+else
+   echo ">>> PROCESS_INTERLINKSAMEAS disabled"
+fi
 
-echo "MULTI LANG DATA"
-############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/multilingual_labels2.sh
-echo "---checkpoint"
-run_virtuoso_cmd 'checkpoint;'
+############## PROCESS WIKIDATA
+if [ $PROCESS_WIKIDATA == 1 ] ; then
+   echo ">>> PROCESS_WIKIDATA unabled"
+   /bin/bash ./process/process_wikidata2.sh
+   echo "---checkpoint"
+   run_virtuoso_cmd 'checkpoint;'
+else
+   echo ">>> PROCESS_WIKIDATA disabled"
+fi
 
-echo "COMPUTE STATS"
-############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-/bin/bash ./process/stats_process.sh
-echo "---checkpoint"
-run_virtuoso_cmd 'checkpoint;'
+############## MIGRATE EVERY LANGUAGES LABELS TO FR RESOURCES
+if [ $PROCESS_MULTILANG == 1 ] ; then
+   echo ">>> PROCESS_MULTILANG unabled"
+   /bin/bash ./process/multilingual_labels2.sh
+   echo "---checkpoint"
+   run_virtuoso_cmd 'checkpoint;'
+else
+   echo ">>> PROCESS_MULTILANG disabled"
+fi
 
-#echo "SAVE DUMPS"
-############## CREATE NAMED GRAPH STRUCTURE AND LOAD DATA 
-#/bin/bash ./process/dumps_export.sh
+############## COMPUTE STATS
+if [ $PROCESS_STATS == 1 ] ; then
+   echo ">>> PROCESS_STATS unabled"
+   /bin/bash ./process/stats_process.sh
+   echo "---checkpoint"
+   run_virtuoso_cmd 'checkpoint;'
+else
+   echo ">>> PROCESS_STATS disabled"
+fi
+
+
+############## EXPORT NEW DATASETS
+if [ $PROCESS_STATS == 1 ] ; then
+   echo ">>> PROCESS_STATS unabled"
+   /bin/bash ./process/dumps_export.sh
+else
+   echo ">>> PROCESS_STATS disabled"
+fi
 
 echo "[INFO] making checkpoint..."
 run_virtuoso_cmd 'checkpoint;'
