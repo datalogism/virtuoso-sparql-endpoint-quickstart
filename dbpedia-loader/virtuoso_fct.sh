@@ -14,12 +14,12 @@ run_virtuoso_cmd () {
    if [[ $VIRT_RETCODE -eq 0 ]]; then
      echo "$VIRT_OUTPUT" | tail -n+5 | perl -pe 's|^SQL> ||g'
      i=$NB_TRY
-     #return 1
+     return 1
    else
      echo -e "[ERROR] running the these commands in virtuoso:\n$1\nerror code: $VIRT_RETCODE\noutput:"
      echo "$VIRT_OUTPUT"
      #let 'ret = VIRT_RETCODE + 128'
-     return "error"
+     return 0
    fi
   done
 }
