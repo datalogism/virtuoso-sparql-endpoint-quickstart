@@ -11,7 +11,19 @@ if [ -z ${PROCESS_MULTILANG+x} ]; then PROCESS_MULTILANG=1; fi
 if [ -z ${PROCESS_STATS+x} ]; then PROCESS_STATS=1; fi
 if [ -z ${PROCESS_DUMPS+x} ]; then PROCESS_DUMPS=1; fi
 
-echo " IMPORT CONDUCTOR version - 06/06/2022 last fix";
+echo "==========================================";
+echo " DBPEDIA LOADER VERSION of 19/07/2022";
+echo "==========================================";
+echo "------------ Current config ------------";
+echo "> PROCESS_STRUCTURE : ${PROCESS_STRUCTURE}";
+echo "> PROCESS_GEOLOC : ${PROCESS_GEOLOC}";
+echo "> PROCESS_INTERLINKSAMEAS : ${PROCESS_INTERLINKSAMEAS}";
+echo "> PROCESS_WIKIDATA : ${PROCESS_WIKIDATA}";
+echo "> PROCESS_MULTILANG : ${PROCESS_MULTILANG}";
+echo "> PROCESS_STATS : ${PROCESS_STATS}";
+echo "> PROCESS_DUMPS : ${PROCESS_DUMPS}";
+echo "==========================================";
+
 # ADD A LOCKER FOR MONITORING THE PROCESS
 touch /opt/virtuoso-opensource/database/loader_locker.lck;
 
