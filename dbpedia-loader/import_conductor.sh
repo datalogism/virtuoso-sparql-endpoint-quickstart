@@ -153,11 +153,11 @@ fi
 
 
 ############## EXPORT NEW DATASETS
-if [ $PROCESS_STATS == 1 ] ; then
-   echo ">>> PROCESS_STATS unabled"
+if [ $PROCESS_DUMPS == 1 ] ; then
+   echo ">>> PROCESS_DUMPS unabled"
    /bin/bash ./process/dumps_export.sh
 else
-   echo ">>> PROCESS_STATS disabled"
+   echo ">>> PROCESS_DUMPS disabled"
 fi
 
 echo "[INFO] making checkpoint..."
