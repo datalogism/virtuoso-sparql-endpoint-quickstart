@@ -2,7 +2,7 @@
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
 
-create_proc="""CREATE PROCEDURE dump_one_graph 
+create_proc="CREATE PROCEDURE dump_one_graph 
   ( IN  srcgraph           VARCHAR
   , IN  out_file           VARCHAR
   , IN  file_length_limit  INTEGER  := 1000000000
@@ -32,11 +32,11 @@ create_proc="""CREATE PROCEDURE dump_one_graph
                    );
    env := vector (dict_new (16000), 0, '', '', '', 0, 0, 0, 0, 0);
    ses := string_output ();
-   FOR (SELECT * FROM ( SPARQL DEFINE input:storage "" 
+   FOR (SELECT * FROM ( SPARQL DEFINE input:storage \"\" 
                          SELECT ?s ?p ?o { GRAPH `iri(?:srcgraph)` { ?s ?p ?o } } 
                        ) AS sub OPTION (LOOP)) DO
       {
-        http_ttl_triple (env, "s", "p", "o", ses);
+        http_ttl_triple (env, \"s\", \"p\", \"o\", ses);
         ses_len := length (ses);
         IF (ses_len > max_ses_len)
           {
@@ -72,7 +72,7 @@ create_proc="""CREATE PROCEDURE dump_one_graph
         file_delete (file_name);
       }
   }
-;""";
+;";
 
 run_virtuoso_cmd "${create_proc}";
 
