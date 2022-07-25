@@ -13,5 +13,7 @@ ADD import_conductor.sh /
 RUN chmod +x /import_conductor.sh
 ADD process ./process
 RUN chmod +rx -R /process
+ADD virtuoso_proc ./virtuoso_proc
+RUN chmod +rx -R /virtuoso_proc
 
 ENTRYPOINT /bin/bash import_conductor.sh 
