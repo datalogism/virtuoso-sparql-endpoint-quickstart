@@ -60,7 +60,7 @@ run_virtuoso_cmd "checkpoint_interval(-1)";
 
 
 ############## CHANGE GEOLOC COORD FROM TRIPLE TO BLANK NODE
-if [ $PROCESS_INIT == 1 ] ; then
+if [ $PROCESS_GEOLOC == 1 ] ; then
    echo ">>> PROCESS_GEOLOC unabled"
    /bin/bash ./process/geoloc_changes.sh
    echo "---checkpoint"
