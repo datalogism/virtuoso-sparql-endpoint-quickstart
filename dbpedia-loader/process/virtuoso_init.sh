@@ -94,3 +94,47 @@ run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_INS ('${DOMAIN}','${DOMAIN}/graph/metad
 
 echo "[INFO] ADD META DATA"
 run_virtuoso_cmd "DB.DBA.TTLP_MT (file_to_string_output ('${STORE_DATA_DIR}/meta_base/dbpedia_fr-metadata.ttl'), '', '${DOMAIN}/graph/metadata');" 
+
+
+############## VIRTUOSO CONFIG
+echo "[INFO] Setting 'dbp_decode_iri' registry entry to 'on'"
+run_virtuoso_cmd "registry_set ('dbp_decode_iri', 'on');"
+echo "[INFO] Setting dynamic !!!!"
+run_virtuoso_cmd "registry_set ('dbp_DynamicLocal', 'on');"
+run_virtuoso_cmd "registry_set ('dbp_lhost', ':8890');"
+run_virtuoso_cmd "registry_set ('dbp_vhost', '${DOMAIN}');"
+echo "[INFO] Setting 'dbp_domain' registry entry to ${DOMAIN}"
+run_virtuoso_cmd "registry_set ('dbp_domain', '${DOMAIN}');"
+echo "[INFO] Setting 'dbp_graph' registry entry to ${DOMAIN}"
+run_virtuoso_cmd "registry_set ('dbp_graph', '${DOMAIN}');"
+echo "[INFO] Setting 'dbp_lang' registry entry to ${DBP_LANG}"
+run_virtuoso_cmd "registry_set ('dbp_lang', '${DBP_LANG}');"
+echo "[INFO] Setting 'dbp_category' registry entry to ${DBP_CATEGORY}"
+run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
+
+################ INSTALL LAST DBPEDIA VAD
+echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
+run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
+echo "[INFO] Installing VAD package 'fct_dav.vad'"
+run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/fct_dav.vad', 0);"
+
+##### HERE WE CHANGE THE DEFAULT BEHAVIOR OF THE DESCRIBE
+# see https://community.openlinksw.com/t/how-to-change-default-describe-mode-in-faceted-browser/1691/3
+run_virtuoso_cmd "INSERT INTO DB.DBA.SYS_SPARQL_HOST VALUES ('*',null,null,null,'DEFINE sql:describe-mode \"CBD\"');"
+
+#### DATA IMPORT PLACE
+
+echo "[INFO] deactivating auto-indexing"
+run_virtuoso_cmd "DB.DBA.VT_BATCH_UPDATE ('DB.DBA.RDF_OBJ', 'ON', NULL);"
+
+echo '[INFO] Starting load process...';
+
+load_cmds=`cat <<EOF
+log_enable(2);
+checkpoint_interval(-1);
+set isolation = 'uncommitted';
+rdf_loader_run();
+log_enable(1);
+checkpoint_interval(60);
+EOF`
+run_virtuoso_cmd "$load_cmds";
