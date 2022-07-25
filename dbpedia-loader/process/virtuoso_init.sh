@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-. ../virtuoso_fct.sh --source-only
+. ../virtuoso_fct.sh
 
 echo " >>>>>> structure_process : last fix 06/06/2022"
 pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$' # IF ENDING BY ACCEPTED EXTENSIONS
