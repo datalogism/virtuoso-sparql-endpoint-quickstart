@@ -138,3 +138,6 @@ log_enable(1);
 checkpoint_interval(60);
 EOF`
 run_virtuoso_cmd "$load_cmds";
+
+
+run_virtuoso_cmd "${proc_dump}";
