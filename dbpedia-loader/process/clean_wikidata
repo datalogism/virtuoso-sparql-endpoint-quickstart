@@ -1,0 +1,2 @@
+select ?s FROM <http://fr.dbpedia.org/graph/dbpedia_wikidata_sameas-all-wikis> where {?s ?p ?o. FILTER NOT EXISTS{?s  rdf:type dbo:WdtFrResource }} GROUP BY ?s LIMIT 100
+
