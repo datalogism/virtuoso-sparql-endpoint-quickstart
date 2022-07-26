@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh --source-only
-pat4='metadata'
-
+pat_meta='metadata'
+pat_onto='ontology'
 echo "[STATS TIME]"
 echo "----GENERAL STATS"
 
@@ -32,7 +32,7 @@ for graph in ${graph_list[@]}; do
     echo "<$graph>"
     echo "----  GRAPH STATS";
     
-    if [[ ! $graph =~ $pat4 ]]; then
+    if [[ ! $graph =~ $pat_meta ]] && [[ ! $graph =~ $pat_onto ]]; then
 
         ################### SPARQL - GRAPH STATS - Nb triples total
         run_virtuoso_cmd "SPARQL PREFIX void: <http://rdfs.org/ns/void#> WITH <${DOMAIN}/graph/metadata> DELETE { <$graph> void:triples ?no . } WHERE { <$graph> void:triples ?no };"
