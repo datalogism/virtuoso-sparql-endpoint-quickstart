@@ -38,6 +38,7 @@ services:
       PROCESS_MULTILANG: ${PROCESS_MULTILANG}
       PROCESS_STATS: ${PROCESS_STATS}
       PROCESS_DUMPS: ${PROCESS_DUMPS}
+      CLEAN_MULTILANG: ${CLEAN_MULTILANG}
     volumes:
       - ${DATA_DIR}:/root/data
       - ${VIRTUOSO_DATABASE_DIR}:/opt/virtuoso-opensource/database
