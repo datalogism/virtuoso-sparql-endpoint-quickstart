@@ -1,6 +1,39 @@
 #!/usr/bin/env bash
 . ../virtuoso_fct.sh
 
+## CLEAN METADATA GRAPH
+resp=$(run_virtuoso_cmd "SPARQL DROP GRAPH <${DOMAIN}/graph/metadata>;");
+## CREATE SUBGRAPHS
+run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_CREATE ('${DOMAIN}',1);"
+run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_INS ('${DOMAIN}','${DOMAIN}/graph/metadata');"
+
+
+echo "[INFO] ADD META DATA"
+run_virtuoso_cmd "DB.DBA.TTLP_MT (file_to_string_output ('${STORE_DATA_DIR}/meta_base/dbpedia_fr-metadata.ttl'), '', '${DOMAIN}/graph/metadata');" 
+
+
+############## VIRTUOSO CONFIG
+echo "[INFO] Setting 'dbp_decode_iri' registry entry to 'on'"
+run_virtuoso_cmd "registry_set ('dbp_decode_iri', 'on');"
+echo "[INFO] Setting dynamic !!!!"
+run_virtuoso_cmd "registry_set ('dbp_DynamicLocal', 'on');"
+run_virtuoso_cmd "registry_set ('dbp_lhost', ':8890');"
+run_virtuoso_cmd "registry_set ('dbp_vhost', '${DOMAIN}');"
+echo "[INFO] Setting 'dbp_domain' registry entry to ${DOMAIN}"
+run_virtuoso_cmd "registry_set ('dbp_domain', '${DOMAIN}');"
+echo "[INFO] Setting 'dbp_graph' registry entry to ${DOMAIN}"
+run_virtuoso_cmd "registry_set ('dbp_graph', '${DOMAIN}');"
+echo "[INFO] Setting 'dbp_lang' registry entry to ${DBP_LANG}"
+run_virtuoso_cmd "registry_set ('dbp_lang', '${DBP_LANG}');"
+echo "[INFO] Setting 'dbp_category' registry entry to ${DBP_CATEGORY}"
+run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
+
+################ INSTALL LAST DBPEDIA VAD
+echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
+run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
+echo "[INFO] Installing VAD package 'fct_dav.vad'"
+run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/fct_dav.vad', 0);"
+
 echo " >>>>>> structure_process : last fix 06/06/2022"
 pat1='.*\.(nt|nq|owl|rdf|trig|ttl|xml|gz|bz2)$' # IF ENDING BY ACCEPTED EXTENSIONS
 pat2='([a-z\-]+)_'
@@ -85,38 +118,6 @@ do
     fi;
 done
 
-## CLEAN METADATA GRAPH
-resp=$(run_virtuoso_cmd "SPARQL DROP GRAPH <${DOMAIN}/graph/metadata>;");
-## CREATE SUBGRAPHS
-run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_CREATE ('${DOMAIN}',1);"
-run_virtuoso_cmd "DB.DBA.RDF_GRAPH_GROUP_INS ('${DOMAIN}','${DOMAIN}/graph/metadata');"
-
-
-echo "[INFO] ADD META DATA"
-run_virtuoso_cmd "DB.DBA.TTLP_MT (file_to_string_output ('${STORE_DATA_DIR}/meta_base/dbpedia_fr-metadata.ttl'), '', '${DOMAIN}/graph/metadata');" 
-
-
-############## VIRTUOSO CONFIG
-echo "[INFO] Setting 'dbp_decode_iri' registry entry to 'on'"
-run_virtuoso_cmd "registry_set ('dbp_decode_iri', 'on');"
-echo "[INFO] Setting dynamic !!!!"
-run_virtuoso_cmd "registry_set ('dbp_DynamicLocal', 'on');"
-run_virtuoso_cmd "registry_set ('dbp_lhost', ':8890');"
-run_virtuoso_cmd "registry_set ('dbp_vhost', '${DOMAIN}');"
-echo "[INFO] Setting 'dbp_domain' registry entry to ${DOMAIN}"
-run_virtuoso_cmd "registry_set ('dbp_domain', '${DOMAIN}');"
-echo "[INFO] Setting 'dbp_graph' registry entry to ${DOMAIN}"
-run_virtuoso_cmd "registry_set ('dbp_graph', '${DOMAIN}');"
-echo "[INFO] Setting 'dbp_lang' registry entry to ${DBP_LANG}"
-run_virtuoso_cmd "registry_set ('dbp_lang', '${DBP_LANG}');"
-echo "[INFO] Setting 'dbp_category' registry entry to ${DBP_CATEGORY}"
-run_virtuoso_cmd "registry_set ('dbp_category', '${DBP_CATEGORY}');"
-
-################ INSTALL LAST DBPEDIA VAD
-echo "[INFO] Installing VAD package 'dbpedia_dav.vad'"
-run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/dbpedia_dav.vad', 0);"
-echo "[INFO] Installing VAD package 'fct_dav.vad'"
-run_virtuoso_cmd "vad_install('/opt/virtuoso-opensource/vad/fct_dav.vad', 0);"
 
 ##### HERE WE CHANGE THE DEFAULT BEHAVIOR OF THE DESCRIBE
 # see https://community.openlinksw.com/t/how-to-change-default-describe-mode-in-faceted-browser/1691/3
